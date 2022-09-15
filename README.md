@@ -7,7 +7,7 @@ The following process will be used to install admin dashboard using package mana
 1. Install Node.js : Please install latest version of Node.js from https://nodejs.org
 2. Clone repository
 3. Install node dependencies : Run `npm install`
-4. Change Back-end BaseUrl (API Call) which is located in `\src\axios.js` file.
+4. Change Back-end BaseUrl (for API Call) which is located in `\src\axios.js` file.
 5. To run `npm run dev`.
 
     Note:- when you run above command it will run project in browser automatically.
