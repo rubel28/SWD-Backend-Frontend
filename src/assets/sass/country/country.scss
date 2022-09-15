@@ -1,0 +1,141 @@
+//  =================
+//      Imports
+//  =================
+
+@import '../../base/base'; // Base Variables
+
+.section {
+    border: 1px solid $m-color_3;
+    box-shadow: 0 0 40px 0 rgba(94, 92, 154, 0.06);
+}
+
+.layout-spacing {
+    padding-bottom: 25px;
+}
+.general-info .info h6 {
+    color: $dark;
+    margin: 4px 8px 40px 8px;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+/*
+    General Infomation
+*/
+
+.general-info {
+    background-color: #fff;
+    border-radius: 6px;
+
+    .info,
+    .save-info {
+        padding: 20px;
+    }
+
+    .info {
+        .form {
+            width: 92%;
+        }
+
+        .upload {
+            border-right: 1px solid $m-color_2;
+
+            p {
+                font-size: 14px;
+                font-weight: 600;
+                color: $primary;
+
+                i {
+                    font-size: 22px;
+                    color: $primary;
+                    vertical-align: middle;
+                }
+            }
+        }
+
+        label {
+            color: $m-color_6;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+        
+    }
+}
+
+/*
+    Image upload
+*/
+// logo/image upload by Rubel
+.invoice-logo .upload {
+    display: flex;
+    justify-content: center;
+}
+
+.invoice-logo .profile-preview {
+    border: 1px solid #e0e6ed;
+    text-align: center;
+    object-fit: contain;
+}
+
+.invoice-logo .profile-preview.upload-preview {
+    padding: 7px;
+}
+
+.invoice-logo .profile-preview svg {
+    width: 50px;
+    height: 50px;
+    color: #ccc;
+}
+
+/*
+Modal
+*/
+.modal-content {
+    border: none;
+    box-shadow: 0px 0px 15px 1px rgba(113, 106, 202, 0.2);
+    
+}
+.compose-box {
+    // background-color: #fff;
+    border-radius: 6px;
+}
+.compose-box .compose-content {
+    h5 {
+        font-weight: 700;
+        font-size: 18px;
+        color: #3b3f5c;
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+}
+.compose-box .compose-content form {
+    svg {
+        align-self: center;
+        font-size: 19px;
+        margin-right: 14px;
+        color: #4361ee;
+        font-weight: 600;
+    }
+
+    .validation-text {
+        display: none;
+        color: #e7515a;
+        font-weight: 600;
+        text-align: left;
+        margin-top: 6px;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+}
+
+@media (max-width: 991px) {
+    
+}
+
+@media (max-width: 767px) {
+    .general-info .info .upload {
+        border-right: none;
+    }    
+}
