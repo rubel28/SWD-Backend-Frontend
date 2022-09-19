@@ -32,8 +32,8 @@
             </li>
         </ul>
     </teleport>
-    <Loader v-if="loading"></Loader>
-    <div v-else class="layout-px-spacing">
+<!--    <Loader v-if="loading=false"></Loader>-->
+    <div class="layout-px-spacing">
         <div class="row layout-top-spacing">
             <div v-if="error" class="alert alert-light-danger alert-dismissible border-0 mb-4" role="alert">
                 <strong>{{ error }}</strong>
@@ -72,7 +72,9 @@
                         </div>
                         
 
-                        <v-server-table ref="table" :columns="columns" :options="table_option">
+                        <v-server-table ref="table" :columns="columns" :options="table_option"
+                                        @loading="loading=true"
+                                        @loaded="loading=false">
 
                             <template #action="props">
                                 <a href="javascript:void(0);" @click="handle_edit(props.row)" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
@@ -150,22 +152,13 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label for="country_name">Country Name</label>
-                                                    <multiselect v-model="countryOption"
-                                                                 :options="options"
-                                                                 :searchable="true"
-                                                                 :preselect-first="false"
-                                                                 track-by="country_id"
-                                                                 label="country_name"
-                                                                 id="country_name"
-                                                                 selected-label="Selected"
-                                                                 select-label="Select"
-                                                                 deselect-label=""
-                                                                 placeholder="Select Country"
-                                                                 :taggable="true"
-                                                                 @select="handle_changes"
-                                                                 :class="[is_submit_form  ? (params.country_id ? 'is-valid' : 'is-invalid') : '']"
-                                                    >
-                                                    </multiselect>
+                                                    <select v-model="params.country_id" class="form-select" id="country_name"
+                                                            :class="[is_submit_form ? (params.country_id ? 'is-valid' : 'is-invalid') : '']">
+                                                        <option value="" disabled>Select Country</option>
+                                                        <option v-for="(option, i) in options" :key="option.id" :value="option.id">
+                                                            {{option.country_name}}
+                                                        </option>
+                                                    </select>
                                                     <div class="valid-feedback">Looks good!</div>
                                                     <div class="invalid-feedback">Please Select Country</div>
                                                 </div>
@@ -226,14 +219,16 @@
         </div>
     </div>
 </template>
+<style>
+.VueTables__error {
+    color:red;
+}
+</style>
 
 <script setup>
     import {computed, onMounted, ref} from 'vue';
     import '@/assets/sass/components/custom-sweetalert.scss';
     import '@/assets/sass/province/province.scss';
-    import Multiselect from '@suadelabs/vue3-multiselect';
-    import '@suadelabs/vue3-multiselect/dist/vue3-multiselect.css';
-    import Loader from '@/views/backend/loader/default-loader';
     import useValidation from "@/composables/useValidation";
     import useShowMessage from "@/composables/useShowMessage";    
     import useExportTable from "@/composables/useExportTable";    
@@ -255,12 +250,10 @@
         province_name: '',
         province_status: true,
         id:null,
-        country_id: null,
+        country_id:''
     });
-    const countryOption = ref([]);
     const options = ref([]);
     const table = ref(null)
-    //const province_name = ref(null);
     const validateData = ref({ province_name:'',country_id:'' });
     const columns = ref(['id','province_name', 'country_name', 'active_status', 'action']);
     const items = ref([]);
@@ -272,13 +265,18 @@
         skin: 'table table-hover',
         columnsClasses: { action: 'actions text-center' },
         pagination: { nav: 'scroll', chunk: 3,edge: true,dropdown: false },
+        debounce: 500,
+        filterByColumn:false,
+        filterable:true,
+        orderBy:{column:'country_name',ascending:true},
         texts: {
             count: 'Showing {from} to {to} of {count}',
             filter: '',
             filterPlaceholder: 'Search...',
             limit: 'Results:',
+            loadingError: 'Oops! Something went wrong',
         },
-        sortable: ['id','province_name', 'country_name','active_status'],
+        sortable: ['id','province_name','country_name','active_status'],
         sortIcon: {
             base: 'sort-icon-none',
             up: 'sort-icon-asc',
@@ -293,14 +291,14 @@
         },
         requestAdapter(data) {
             return {
-                sort: data.orderBy ? data.orderBy : 'city_name',
+                sort: data.orderBy ? data.orderBy : 'country_name',
                 direction: data.ascending ? 'asc' : 'desc',
                 query: data.query,
                 byColumn: data.byColumn,
                 limit: data.limit,
                 page: data.page,
                 orderBy: data.orderBy,
-                ascending: data.ascending,
+                ascending: data.ascending,                
             }
         },
         responseAdapter({data}) {
@@ -313,7 +311,7 @@
     });
 
     /* set province data and loader to state */
-    const loading = computed(() => store.state.province.country.loading);
+    //const loading = computed(() => store.state.province.country.loading);
     const loadingSubmitted = computed(() =>  store.state.province.buttonLoading.loading);
 
     /* Mounted hook */
@@ -332,13 +330,7 @@
     /* get country data */
     function getCountryData() {
         store.dispatch('province/getCountries').then(() => {
-            let countryData = store.state.province.country.data;
-            countryData.map((d) => {
-                options.value.push({
-                    country_id: d.id,
-                    country_name: d.country_name,                    
-                })
-            });
+            options.value = store.state.province.country.data;            
             initPopup();
         });
     };
@@ -346,23 +338,13 @@
     /* Modal init */
     const initPopup = () => {
         addProvinceModal = new window.bootstrap.Modal(document.getElementById('addProvinceModal'));
-    };
-    /* Update country id on option change */
-    const handle_changes = (newValue) => {
-        params.value.country_id = newValue.country_id;
-    }
+    };   
 
     /* open modal in add and edit mode */
     const handle_edit = (province) => {        
         if (province) {
             reset_form();
-            params.value = JSON.parse(JSON.stringify(province));
-            let currentCountry = JSON.parse(JSON.stringify(province))            
-            countryOption.value.push({
-                country_id: currentCountry.country_id,
-                country_name: currentCountry.country_name,
-            });
-            //console.log(params.value.country_id);
+            params.value = JSON.parse(JSON.stringify(province));            
         }
         addProvinceModal.show();
     };
@@ -422,9 +404,8 @@
 
     /* Reset all reactive/ref filed after successful insert */
     const reset_form = () => {
-        params.value = {id:null,province_name:'',province_status: true,country_id:null};
+        params.value = {id:null,province_name:'',province_status: true,country_id:''};
         is_submit_form.value = false;
-        countryOption.value = [];
     };
     
     /* Export table function */

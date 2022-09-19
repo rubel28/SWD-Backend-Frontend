@@ -32,8 +32,8 @@
             </li>
         </ul>
     </teleport>
-    <Loader v-if="loading"></Loader>
-    <div v-else class="layout-px-spacing">
+<!--    <Loader v-if="loading"></Loader>-->
+    <div class="layout-px-spacing">
         <div class="row layout-top-spacing">
             <div v-if="error" class="alert alert-light-danger alert-dismissible border-0 mb-4" role="alert">
                 <strong>{{ error }}</strong>
@@ -72,9 +72,9 @@
                         </div>
                         
 
-                        <v-client-table :data="items" :columns="columns" :options="table_option">
+                        <v-server-table ref="table" :columns="columns" :options="table_option">
 
-                            <template #action="props">
+                            <template #actions="props">
                                 <a href="javascript:void(0);" @click="handle_edit(props.row)" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +122,7 @@
                             <template #country_iso3="props">{{ props.row.country_iso3 }}</template>
                             <template #country_phone_code="props">{{ props.row.country_phone_code }}</template>
                             <template #active_status="props">{{ props.row.active_status }}</template>
-                        </v-client-table>
+                        </v-server-table>
                     </div>
                 </div>                
             </div>
@@ -298,6 +298,7 @@
     import useExportTable from "@/composables/useExportTable";    
     import { useStore } from 'vuex';
     import { useMeta } from '@/composables/use-meta';
+    import axiosClient from "@/axios";
     
     /* Set page title */
     useMeta({ title: 'Country' });
@@ -320,9 +321,10 @@
         id:null,
     });
     //const country_name = ref(null);
+    const table = ref(null)
     const selected_file = ref(null);
     const validateData = ref({ country_name:'' });
-    const columns = ref(['id', 'country_name', 'country_iso','country_iso3', 'country_phone_code', 'active_status', 'action']);
+    const columns = ref(['id', 'country_name', 'country_iso3','country_iso3', 'country_phone_code', 'active_status', 'actions']);
     const items = ref([]);
 
     /* Set Data table option */
@@ -330,26 +332,55 @@
         perPage: 10,
         perPageValues: [5, 10, 20, 50],
         skin: 'table table-hover',
-        columnsClasses: { action: 'actions text-center' },
-        pagination: { nav: 'scroll', chunk: 5 },
+        columnsClasses: { actions: 'actions text-center' },
+        pagination: { nav: 'scroll', chunk: 3,edge: true,dropdown: false },
+        debounce: 500,
+        filterByColumn:false,
+        filterable:true,
+        orderBy:{column:'country_name',ascending:true},
         texts: {
             count: 'Showing {from} to {to} of {count}',
             filter: '',
             filterPlaceholder: 'Search...',
             limit: 'Results:',
+            loadingError: 'Oops! Something went wrong',
         },
-        sortable: ['id', 'country_name', 'country_iso', 'country_iso3', 'country_phone_code','active_status'],
+        sortable: ['id', 'country_name', 'country_iso3', 'country_iso3', 'country_phone_code','active_status'],
         sortIcon: {
             base: 'sort-icon-none',
             up: 'sort-icon-asc',
             down: 'sort-icon-desc',
         },
-        resizableColumns: false,
-        filterByColumn:false,
+        requestFunction(data) {
+            return axiosClient.get('/countries', {
+                params: data
+            }).catch(function (e) {
+                this.dispatch('error',e);
+            })
+        },
+        requestAdapter(data) {
+            return {
+                sort: data.orderBy ? data.orderBy : 'country_name',
+                direction: data.ascending ? 'asc' : 'desc',
+                query: data.query,
+                byColumn: data.byColumn,
+                limit: data.limit,
+                page: data.page,
+                orderBy: data.orderBy,
+                ascending: data.ascending,
+            }
+        },
+        responseAdapter({data}) {
+            items.value = data.data;
+            return {
+                data: data.data,
+                count: data.count,
+            }
+        },
     });
 
     /* set country data and loader to state */
-    const loading = computed(() => store.state.country.countries.loading);
+    //const loading = computed(() => store.state.country.countries.loading);
     const loadingSubmitted = computed(() =>  store.state.country.buttonLoading.loading);
 
     // get data for custom validation
@@ -358,7 +389,8 @@
     })
     /* Mounted hook */
     onMounted(() => {
-        getCountryData();
+        //getCountryData();
+        initPopup();
     })
     
     /* get country data */
@@ -411,9 +443,9 @@
                 store.commit('country/setButtonLoading', false);
                 const currentData = store.state.country.country.data;
                 if(params.value.id){
-                    items.value[items.value.findIndex((d) => d.id === params.value.id)] = currentData;
+                    table.value.data[table.value.data.findIndex((d) => d.id === params.value.id)] = currentData;
                 }else {
-                    items.value.splice(0,0,currentData);
+                    table.value.data.splice(0,0,currentData);
                 }
                 showMessage(data.message,'success');// type => success/error
                 addCountryModal.hide();
@@ -437,7 +469,7 @@
         }).then(result => {
             if (result.value) {
                 store.dispatch("country/deleteCountry", id).then(() => {
-                    items.value = items.value.filter((d) => d.id != id);
+                    table.value.data.splice(table.value.data.findIndex((d) => d.id === id),1);
                 });
                 showMessage('Country has been deleted.','success');// type => success/error
             }

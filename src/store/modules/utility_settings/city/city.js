@@ -18,7 +18,7 @@ export default {
             loading: false,
             data: []
         },
-        province:{
+        provinces:{
             data: []
         },
     },
@@ -44,8 +44,8 @@ export default {
         setCountries: (state, country) => {
             state.country.data = country;
         },
-        setProvinces: (state, city) => {
-            state.city.data = city;
+        setProvinces: (state, provinces) => {
+            state.provinces.data = provinces;
         },
     },
     actions: {
@@ -92,21 +92,18 @@ export default {
             });
         },
         getCountries({commit}){
-            commit('setCountryLoading',true);
-            return axiosClient.get('/countries')
+            return axiosClient.get('/select-box-countries')
                 .then((res) => {
                     //console.log(res.data.data)
                     commit('setCountries', res.data.data);
-                    commit('setCountryLoading',false);
                     return res;
                 })
                 .catch((err) => {
-                    commit('setCountryLoading',false);
                     throw err;
                 });
         },
         getProvinces({commit}, id){
-            return axiosClient.get(`/province-by-country/${id}`)
+            return axiosClient.get(`/provinces-by-country/${id}`)
                 .then((res) => {
                     //console.log(res.data.data)
                     commit('setProvinces', res.data.data);

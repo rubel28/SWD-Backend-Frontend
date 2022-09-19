@@ -87,16 +87,13 @@ export default {
             });
         },
         getCountries({commit}){
-            commit('setCountryLoading',true);
-            return axiosClient.get('/countries')
+            return axiosClient.get('/select-box-countries')
                 .then((res) => {
                     //console.log(res.data.data)
                     commit('setCountries', res.data.data);
-                    commit('setCountryLoading',false);
                     return res;
                 })
                 .catch((err) => {
-                    commit('setCountryLoading',false);
                     throw err;
                 });
         },

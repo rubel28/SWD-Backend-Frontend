@@ -151,22 +151,13 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label for="country_name">Country Name</label>
-                                                    <multiselect v-model="countryOptionValue"
-                                                                 :options="countryOptions"
-                                                                 :searchable="true"
-                                                                 :preselect-first="false"
-                                                                 track-by="country_id"
-                                                                 label="country_name"
-                                                                 id="country_name"
-                                                                 selected-label="Selected"
-                                                                 select-label="Select"
-                                                                 deselect-label=""
-                                                                 placeholder="Select Country"
-                                                                 :taggable="true"
-                                                                 @select="handle_changes"
-                                                                 :class="[is_submit_form  ? (params.country_id ? 'is-valid' : 'is-invalid') : '']"
-                                                    >
-                                                    </multiselect>
+                                                    <select v-model="params.country_id" @change="change_handle()" class="form-select" id="country_name"
+                                                            :class="[is_submit_form ? (params.country_id ? 'is-valid' : 'is-invalid') : '']">
+                                                        <option value="" disabled>Select Country</option>
+                                                        <option v-for="(option, i) in options" :key="option.id" :value="option.id">
+                                                            {{option.country_name}}
+                                                        </option>
+                                                    </select>
                                                     <div class="valid-feedback">Looks good!</div>
                                                     <div class="invalid-feedback">Please Select Country</div>
                                                 </div>
@@ -176,22 +167,13 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label for="province_name">Province Name</label>
-                                                    <multiselect v-model="provinceOptionValue"
-                                                                 :options="provinceOptions"
-                                                                 :searchable="true"
-                                                                 :preselect-first="false"
-                                                                 track-by="province_id"
-                                                                 label="province_name"
-                                                                 id="province_name"
-                                                                 selected-label="Selected"
-                                                                 select-label="Select"
-                                                                 deselect-label=""
-                                                                 placeholder="Select Province"
-                                                                 :taggable="true"
-                                                                 @select="handle_province_changes"
-                                                                 :class="[is_submit_form  ? (params.province_id ? 'is-valid' : 'is-invalid') : '']"
-                                                    >
-                                                    </multiselect>
+                                                    <select v-model="params.province_id" class="form-select" id="province_name"
+                                                            :class="[is_submit_form ? (params.province_id ? 'is-valid' : 'is-invalid') : '']">
+                                                        <option value="" disabled>Select Province</option>
+                                                        <option v-for="(option, i) in provinceOptions" :key="option.id" :value="option.id">
+                                                            {{option.province_name}}
+                                                        </option>
+                                                    </select>
                                                     <div class="valid-feedback">Looks good!</div>
                                                     <div class="invalid-feedback">Please Select Province</div>
                                                 </div>
@@ -200,11 +182,11 @@
                                         <div class="row">                                            
                                             <div class="col-sm-12">
                                                 <div class="form-group">
-                                                    <label for="province_status">Active Status</label>
-                                                    <div id="province_status" class="col-lg-3 col-md-3 col-sm-4 col-6">
+                                                    <label for="city_status">Active Status</label>
+                                                    <div id="city_status" class="col-lg-3 col-md-3 col-sm-4 col-6">
                                                         <label class="switch s-outline s-outline-success mb-4 me-2">
                                                             <input
-                                                                v-model="params.province_status"
+                                                                v-model="params.city_status"
                                                                 type="checkbox"
                                                                 name="province_status"
                                                             />
@@ -253,6 +235,12 @@
     </div>
 </template>
 
+<style>
+.VueTables__error {
+    color:red;
+}
+</style>
+
 <script setup>
     import {computed, onMounted, ref} from 'vue';
     import '@/assets/sass/components/custom-sweetalert.scss';
@@ -281,17 +269,15 @@
         city_name: '',
         city_status: true,
         id:null,
-        province_id: null,
-        country_id: null,
+        province_id: '',
+        country_id: '',
     });
     const table = ref(null);
-    const countryOptionValue = ref([]);
-    const provinceOptionValue = ref([]);
-    const countryOptions = ref([]);
+    const options = ref([]);
     const provinceOptions = ref([]);
     //const province_name = ref(null);
     const validateData = ref({ city_name:'',country_id:'',province_id:'' });
-    const columns = ref(['id','city_name','province_name','country_name', 'city_status', 'action']);
+    const columns = ref(['id','city_name','province_name','country_name', 'active_status', 'action']);
     const items = ref([]);
     //const tableData = ref([]);
 
@@ -347,41 +333,35 @@
     const loadingSubmitted = computed(() =>  store.state.city.buttonLoading.loading);
     //const url = computed(() =>  `${store.getters.baseUrl}/cities`);
     //console.log(url);
-
+    
     /* Mounted hook */
     onMounted(() => {
-        //getProvinceData();
         getCountryData();
     })
     
     /* get province data */
     function getProvinceData() {        
-        store.dispatch('city/getProvinces').then(() => {
-            items.value = store.state.city.cities.data;            
+        store.dispatch('city/getProvinces',params.value.country_id).then(() => {
+            provinceOptions.value = store.state.city.provinces.data;
         });
     };
     /* get country data */
     function getCountryData() {
         store.dispatch('city/getCountries').then(() => {
-            let countryData = store.state.city.country.data;
-            countryData.map((d) => {
-                countryOptions.value.push({
-                    country_id: d.id,
-                    country_name: d.country_name,                    
-                })
-            });
+            options.value = store.state.city.country.data;
             initPopup();
         });
     };
+
+    function change_handle(){
+        getProvinceData();
+        params.value.province_id = '';
+    }
 
     /* Modal init */
     const initPopup = () => {
         addCityModal = new window.bootstrap.Modal(document.getElementById('addCityModal'));
     };
-    /* Update country id on option change */
-    const handle_changes = (newValue) => {
-        params.value.country_id = newValue.country_id;
-    }
 
     /* Update City id on option change */
     const handle_province_changes = (newValue) => {
@@ -393,16 +373,7 @@
         if (city) {
             reset_form();
             params.value = JSON.parse(JSON.stringify(city));
-            let currentCountry = JSON.parse(JSON.stringify(city))            
-            countryOptionValue.value.push({
-                country_id: currentCountry.country_id,
-                country_name: currentCountry.country_name,
-            });
-            provinceOptionValue.value.push({
-                province_id: currentCountry.province_id,
-                province_name: currentCountry.province_name,
-            });
-            //console.log(params.value.country_id);
+            getProvinceData();
         }
         addCityModal.show();
     };
@@ -433,7 +404,6 @@
                 addCityModal.hide();
             }).catch((err) => {
                 store.commit('city/setButtonLoading', false);
-                //error.value = `${err.data.message}`;
                 showMessage(`${err.data.message}`,'error');// type => success/error
                 addCityModal.hide();
             });
@@ -462,10 +432,9 @@
 
     /* Reset all reactive/ref filed after successful insert */
     const reset_form = () => {
-        params.value = {id:null,city_name:'',province_id: null,province_status: true,country_id:null};
+        params.value = {id:null,city_name:'',province_id: '',city_status: true,country_id:''};
         is_submit_form.value = false;
-        countryOptionValue.value = [];
-        provinceOptionValue.value = [];
+        provinceOptions.value = [];
     };
     
     /* Export table function */
