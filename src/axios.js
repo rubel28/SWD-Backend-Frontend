@@ -6,7 +6,7 @@ import store from './store';
 import router from './router';
 
 const axiosClient = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api',
+    baseURL: `${process.env.VUE_APP_SWD_API_BASE_URL}/api`,
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

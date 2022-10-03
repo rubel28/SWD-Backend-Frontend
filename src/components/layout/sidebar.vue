@@ -9,64 +9,43 @@
                 <li class="menu">
                     <router-link to="/dashboard" class="dropdown-toggle" @click="toggleMobileMenu">
                         <div class="">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="feather feather-home"
-                            >
-                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                            </svg>
+                            <i data-feather="home"></i>                            
                             <span>{{ $t('dashboard') }}</span>
                         </div>
                     </router-link>
                 </li>
                 <!-- End-->
+
+                <!-- User Manage menu start-->
+                <li class="menu">
+                    <a class="dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#role-manage" aria-controls="role-manage" aria-expanded="false">
+                        <div class="">
+                            <i data-feather="user-x"></i>
+                            <span>{{ $t('role_manage') }}</span>
+                        </div>
+                        <div>
+                            <i data-feather="chevron-right"></i>
+                        </div>
+                    </a>
+
+                    <ul id="role-manage" class="collapse submenu list-unstyled" data-bs-parent="#sidebar">
+                        <li>
+                            <router-link to="/roles" @click="toggleMobileMenu">
+                                {{$t('all_roles')}}
+                            </router-link>
+                        </li>
+                    </ul>
+                </li>
+                <!-- End -->
                 <!-- User Manage menu start-->
                 <li class="menu">
                     <a class="dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#user-manage" aria-controls="user-manage" aria-expanded="false">
                         <div class="">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="feather feather-users"
-                            >
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="9" cy="7" r="4"></circle>
-                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
+                            <i data-feather="users"></i>                            
                             <span>{{ $t('user_manage') }}</span>
                         </div>
                         <div>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="feather feather-chevron-right"
-                            >
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
+                            <i data-feather="chevron-right"></i>
                         </div>
                     </a>
 
@@ -88,38 +67,11 @@
                 <li class="menu">
                     <a class="dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#utility-settings" aria-controls="utility-settings" aria-expanded="false">
                         <div class="">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="feather feather-settings"
-                            >
-                                <circle cx="12" cy="12" r="3"></circle>
-                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                            </svg>
+                            <i data-feather="settings"></i>                            
                             <span>{{ $t('utility-settings') }}</span>
                         </div>
                         <div>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="feather feather-chevron-right"
-                            >
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
+                            <i data-feather="chevron-right"></i>
                         </div>
                     </a>
 
@@ -152,10 +104,12 @@
 import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 const store = useStore();
+import feather from 'feather-icons';
 
 const menu_collapse = ref('dashboard');
 
 onMounted(() => {
+    feather.replace();
     const selector = document.querySelector('#sidebar a[href="' + window.location.pathname + '"]');
     if (selector) {
         const ul = selector.closest('ul.collapse');

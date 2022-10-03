@@ -74,7 +74,7 @@
 
                         <v-server-table ref="table" :columns="columns" :options="table_option">
 
-                            <template #action="props">
+                            <template #actions="props">
                                 <a href="javascript:void(0);" @click="handle_edit(props.row)" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +138,7 @@
                                                            id="name" type="text"
                                                            name="city_name"
                                                            class="form-control"
-                                                           placeholder="Province Name"
+                                                           placeholder="City Name *"
                                                            ref="city_name"
                                                            :class="[is_submit_form ? (params.city_name ? 'is-valid' : 'is-invalid') : '']"
                                                     />
@@ -277,7 +277,7 @@
     const provinceOptions = ref([]);
     //const province_name = ref(null);
     const validateData = ref({ city_name:'',country_id:'',province_id:'' });
-    const columns = ref(['id','city_name','province_name','country_name', 'active_status', 'action']);
+    const columns = ref(['id','city_name','province_name','country_name', 'active_status', 'actions']);
     const items = ref([]);
     //const tableData = ref([]);
 
@@ -439,7 +439,8 @@
     
     /* Export table function */
     const export_table = (type) => {
-        exportTable(type,items.value,columns.value);
+        let cols = columns.value.filter((d) => d != 'actions');
+        exportTable(type,items.value,cols,'City');
     }
     /* define excel column */
     const excel_columns = () => {

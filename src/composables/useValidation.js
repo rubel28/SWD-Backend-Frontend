@@ -1,14 +1,16 @@
 import {ref} from "vue";
 
 const is_submit_form = ref(false);
+const field_name = ref([])
 const validation = (validateData) => {
         let isAllValid = false;
-        //console.log(validateData)
+        field_name.value = [];
         Object.keys(validateData.value).every(key => {
             if(validateData.value[key]){
-                isAllValid = true;
+                isAllValid = true;                
             }else {
                 isAllValid = false;
+                field_name.value.push(key);
                 return false;
             }
             return true;
@@ -25,7 +27,7 @@ const email_validate = (email) => {
 };
 
 const useValidation = () => {
-    return {validation,email_validate,is_submit_form}
+    return {validation,email_validate,is_submit_form, field_name}
 }
 
 export default useValidation

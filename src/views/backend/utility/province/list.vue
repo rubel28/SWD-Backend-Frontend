@@ -76,7 +76,7 @@
                                         @loading="loading=true"
                                         @loaded="loading=false">
 
-                            <template #action="props">
+                            <template #actions="props">
                                 <a href="javascript:void(0);" @click="handle_edit(props.row)" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +139,7 @@
                                                            id="name" type="text"
                                                            name="province_name"
                                                            class="form-control"
-                                                           placeholder="Province Name"
+                                                           placeholder="Province Name *"
                                                            ref="province_name"
                                                            :class="[is_submit_form ? (params.province_name ? 'is-valid' : 'is-invalid') : '']"
                                                     />
@@ -255,7 +255,7 @@
     const options = ref([]);
     const table = ref(null)
     const validateData = ref({ province_name:'',country_id:'' });
-    const columns = ref(['id','province_name', 'country_name', 'active_status', 'action']);
+    const columns = ref(['id','province_name', 'country_name', 'active_status', 'actions']);
     const items = ref([]);
 
     /* Set Data table option */
@@ -410,7 +410,8 @@
     
     /* Export table function */
     const export_table = (type) => {
-        exportTable(type,items.value,columns.value);
+        let cols = columns.value.filter((d) => d != 'actions');
+        exportTable(type,items.value,cols,'Provinces');
     }
     /* define excel column */
     const excel_columns = () => {

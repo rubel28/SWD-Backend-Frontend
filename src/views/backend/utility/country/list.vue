@@ -7,21 +7,7 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="javascript:">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="feather feather-home"
-                                    >
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                    </svg>
+                                    <i data-feather="home"></i>                                    
                                 </a>
                             </li>
                             <li class="breadcrumb-item"><a href="javascript:;">Utility Settings</a></li>
@@ -44,22 +30,8 @@
                     <div class="custom-table panel-body p-0">
                         <div class="d-flex flex-wrap justify-content-between px-3 pt-3 pb-0">
                             <div>
-                                <a id="addCountry" href="javascript:;" @click="handle_edit()" class="btn me-2 btn-primary"
-                                ><svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="feather feather-plus"
-                                >
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
+                                <a id="addCountry" href="javascript:;" @click="handle_edit()" class="btn me-2 btn-primary">
+                                    <i data-feather="plus"></i>
                                     Add New
                                 </a>
                             </div>
@@ -76,37 +48,10 @@
 
                             <template #actions="props">
                                 <a href="javascript:void(0);" @click="handle_edit(props.row)" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.5"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="feather feather-edit-2"
-                                    >
-                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                    </svg>
+                                    <SvgIcon icon="edit-2"></SvgIcon>
                                 </a>
                                 <a href="javascript:void(0);" @click="handle_delete(props.row.id)" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.5"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="feather feather-trash"
-                                    >
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                    </svg>
+                                    <SvgIcon icon="trash"></SvgIcon>
                                 </a>
                             </template>
                             <template #country_name="props">
@@ -141,35 +86,19 @@
                                         <div class="row">
                                             <div class="col-xl-2 col-lg-12 col-md-4">
                                                 <div class="row">
-                                                    <div class=" col-sm-12 invoice-logo">
+                                                    <div class="col-sm-12 country-logo">
                                                         <div class="upload pe-md-6">
                                                             <input ref="fl_profile" type="file" class="d-none" accept="image/*" @change="change_file" />
                                                             <img
                                                                 v-if="params.country_logo_path"
-                                                                :src="params.country_logo_path ? params.country_logo_path : require('@/assets/images/user-profile.jpeg')"
+                                                                :src="params.country_logo_path"
                                                                 alt="profile"
                                                                 class="profile-preview"
                                                                 @click="$refs.fl_profile.click()"
                                                             />
                                                             <div v-else class="profile-preview upload-preview" @click="$refs.fl_profile.click()">
                                                                 <div>
-                                                                    <svg
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        width="24"
-                                                                        height="24"
-                                                                        viewBox="0 0 24 24"
-                                                                        fill="none"
-                                                                        stroke="currentColor"
-                                                                        stroke-width="2"
-                                                                        stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        class="feather feather-upload-cloud"
-                                                                    >
-                                                                        <polyline points="16 16 12 12 8 16"></polyline>
-                                                                        <line x1="12" y1="12" x2="12" y2="21"></line>
-                                                                        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
-                                                                        <polyline points="16 16 12 12 8 16"></polyline>
-                                                                    </svg>
+                                                                    <SvgIcon icon="upload-cloud"></SvgIcon>
                                                                 </div>
                                                                 <div class="mt-2">Click to Upload Logo</div>
                                                             </div>
@@ -186,7 +115,7 @@
                                                                    id="name" type="text"
                                                                    name="country_name"
                                                                    class="form-control"
-                                                                   placeholder="Country Name"
+                                                                   placeholder="Country Name *"
                                                                    ref="country_name"
                                                                    :class="[is_submit_form ? (params.country_name ? 'is-valid' : 'is-invalid') : '']"
                                                             />
@@ -201,7 +130,7 @@
                                                                    id="iso" type="text"
                                                                    name="country_iso"
                                                                    class="form-control"
-                                                                   placeholder="Country ISO"
+                                                                   placeholder="Country ISO *"
                                                             />
                                                         </div>
                                                     </div>                                                    
@@ -256,27 +185,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal" data-bs-dismiss="modal">Discard</button>
                             <button v-if="loadingSubmitted" disabled type="button" class="btn btn-success">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="feather feather-loader spin me-2"
-                                >
-                                    <line x1="12" y1="2" x2="12" y2="6"></line>
-                                    <line x1="12" y1="18" x2="12" y2="22"></line>
-                                    <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
-                                    <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
-                                    <line x1="2" y1="12" x2="6" y2="12"></line>
-                                    <line x1="18" y1="12" x2="22" y2="12"></line>
-                                    <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
-                                    <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
-                                </svg>
+                                <i data-feather="loader"></i>
                                 Saving...
                             </button>
                             <button v-else type="submit" class="btn btn-success" @click="handle_save()">{{ params.id ? 'Update' : 'Add' }}</button>
@@ -299,6 +208,7 @@
     import { useStore } from 'vuex';
     import { useMeta } from '@/composables/use-meta';
     import axiosClient from "@/axios";
+    import feather from 'feather-icons';
     
     /* Set page title */
     useMeta({ title: 'Country' });
@@ -389,8 +299,9 @@
     })
     /* Mounted hook */
     onMounted(() => {
-        //getCountryData();
+        feather.replace();
         initPopup();
+        //getCountryData();
     })
     
     /* get country data */
@@ -478,15 +389,21 @@
 
     /* Reset all reactive/ref filed after successful insert */
     const reset_form = () => {
-        params.value = {id:null,country_name: '',country_iso: '',country_iso3: '',country_phone_code:'',country_logo:'',country_status: true};
-        selected_file.value = null;
+        params.value.id = null;
+        params.value.country_name =  '';
+        params.value.country_iso = '';
+        params.value.country_iso3 = '';
+        params.value.country_phone_code = '';
+        params.value.country_logo_path = '';
+        params.value.country_status = true;
         is_submit_form.value = false;
         //country_name.value.focus();
     };
     
     /* Export table function */
     const export_table = (type) => {
-        exportTable(type,items.value,columns.value);
+        let cols = columns.value.filter((d) => d != 'actions');
+        exportTable(type,items.value,cols,'Country');
     }
     /* define excel column */
     const excel_columns = () => {

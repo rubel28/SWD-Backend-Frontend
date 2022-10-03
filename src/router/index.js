@@ -12,7 +12,7 @@ const routes = [
     //Auth    
     { path: '/auth/login', name: 'Login',
         component: () => import('../views/backend/auth/login'),
-        meta: { layout: 'auth', isGuest: true } },
+        meta: { layout: 'auth', isGuest: true, accessGuard: 'home.can' } },
 
     //dashboard    
     { path: '/dashboard', name: 'Home',
@@ -23,7 +23,7 @@ const routes = [
     {   path: '/users',
         name: 'users',
         component: () => import('../views/backend/user/list'),
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: true, accessGuard: 'user.can'}
     },
     {   path: '/user/add',
         name: 'user-add',
@@ -33,6 +33,18 @@ const routes = [
     {   path: '/user/login-history',
         name: 'login-history',
         component: () => import('../views/backend/user/user_manage/login_history'),
+        meta: { requiresAuth: true }
+    },
+    // Roles and Permission
+    {
+        path: '/roles',
+        name: 'roles',
+        component: () => import('../views/backend/user/role/list'),
+        meta: { requiresAuth: true }
+    },
+    {   path: '/role/add',
+        name: 'role-add',
+        component: () => import('../views/backend/user/role/add'),
         meta: { requiresAuth: true }
     },
     // Utility settings
@@ -82,7 +94,7 @@ const routes = [
         path:'/error404',
         name: 'notFound',
         component: () => import('../views/backend/error/error404'),
-        meta: { layout: 'error' }
+        meta: { layout: 'auth' }
     },
     {
         path:'/:catchAll(.*)',
@@ -109,22 +121,25 @@ const router = new createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    
     if (to.meta && to.meta.layout && to.meta.layout == 'auth') {
-        //console.log('auth..');
         store.commit('setLayout', 'auth');
     }else if (to.meta && to.meta.layout && to.meta.layout == 'error') {
         store.commit('setLayout', 'error');
     }
     else {
-        //console.log('app..');
         store.commit('setLayout', 'app');
     }
     if (to.meta.requiresAuth && !store.state.login.user.token) {
-        //console.log('login..');
         next({name:'Login'});
     } else if (store.state.login.user.token && to.meta.isGuest){
         next({name:'Home'});
     }else{
+        //if(to.meta.accessGuard && store.state.route_permission.includes(to.meta.accessGuard)){
+            //next({name:'Home'});
+        //}else{
+            //next(true);            
+        //}
         next(true);
     }
     //next(true)

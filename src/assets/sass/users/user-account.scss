@@ -1,0 +1,239 @@
+//  =================
+//      Imports
+//  =================
+
+@import '../../base/base'; // Base Variables
+
+.section {
+    border: 1px solid $m-color_3;
+    box-shadow: 0 0 40px 0 rgba(94, 92, 154, 0.06);
+}
+
+.layout-spacing {
+    padding-bottom: 25px;
+}
+
+.blockui-growl-message {
+    display: none;
+    text-align: left;
+    padding: 15px;
+    background-color: $success;
+    color: #fff;
+    border-radius: 3px;
+
+    i {
+        font-size: 20px;
+    }
+}
+
+.general-info .info h5,
+.details .info h5,
+.contact .info h5,
+.document .info h5 {
+    color: $dark;
+    margin: 4px 8px 40px 8px;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+/*
+    General Infomation
+*/
+
+
+/*
+    Image upload
+*/
+// logo/image upload by Rubel
+.upload {
+    display: flex;
+    justify-content: left;
+}
+
+.upload .profile-preview {
+    border: 1px solid #e0e6ed;
+    text-align: center;
+    //object-fit: contain;
+    height: 180px;
+    width: 180px;
+}
+
+.upload .profile-preview .upload-preview {
+    padding: 7px;
+}
+
+.upload .profile-preview svg {
+    width: 100px;
+    height: 100px;
+    color: #4361ee;
+}
+
+/*
+    Document
+*/
+.document {
+    background-color: #fff;
+    border-radius: 6px;
+
+    .info,
+    .save-info {
+        padding: 20px;
+    }
+
+    .info label {
+        color: $m-color_6;
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+    
+    .info {
+        .upload {
+            border-right: 0px solid $m-color_2;            
+        }
+    }
+}
+/*
+    details
+*/
+
+.details, .general-info {
+    background-color: #fff;
+    border-radius: 6px;
+
+    .info,
+    .save-info {
+        padding: 20px;
+    }
+
+    .info label {
+        color: $m-color_6;
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+}
+
+
+/*
+    Contact
+*/
+
+.contact {
+    background-color: #fff;
+    border-radius: 6px;
+
+    .info,
+    .save-info {
+        padding: 20px;
+    }
+
+    .info label {
+        color: $m-color_6;
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+}
+
+.input-group .input-group-text svg {
+    color: $primary;
+}
+
+/*
+close button
+*/
+.close {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    opacity: 0.3;
+}
+.close:hover {
+    opacity: 1;
+}
+.close:before, .close:after {
+    position: absolute;
+    top:4px;
+    left: 12px;
+    content: ' ';
+    height: 12px;
+    width: 2px;
+    background-color: #333;
+}
+.close:before {
+    transform: rotate(45deg);
+}
+.close:after {
+    transform: rotate(-45deg);
+}
+
+/*
+Multiselect 
+*/
+.select2 .multiselect__option--highlight {
+    background: #fff;
+    color: #4361ee;
+}
+.select2 .multiselect__option--selected {
+    background-color: rgba(27, 85, 226, 0.23921568627450981) !important;
+    color: #4361ee !important;
+    font-weight: normal !important;
+}
+
+.select2 .multiselect__option--disabled {
+    background: rgba(27, 85, 226, 0.23921568627450981) !important;
+}   
+.select2 .multiselect__tag {
+    color: #000;
+    background: #e4e4e4;
+}
+.select2 .multiselect__tag-icon:after {
+    color: #000 !important;
+}
+.select2 .multiselect__tag-icon:focus,
+.select2 .multiselect__tag-icon:hover {
+    background: inherit;
+}
+
+
+/*
+    Footer
+*/
+
+.account-settings-footer {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background: #fff;
+    padding: 12px 20px;
+    -webkit-box-shadow: -2px -9px 20px rgba(126, 142, 177, 0.12);
+    -moz-box-shadow: -2px -9px 20px rgba(126, 142, 177, 0.12);
+    box-shadow: -2px -9px 20px rgba(126, 142, 177, 0.12);
+    border-top: 1px solid $m-color_1;
+    border-radius: 6px 6px 0 0;
+    z-index: 5;
+
+    .as-footer-container {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 991px) {
+    .account-settings-container .account-content {
+        width: 100%;
+        padding: 0;
+    }
+    .close:hover {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 767px) {
+    .general-info .info .upload {
+        border-right: none;
+    }
+
+    .close:hover {
+        opacity: 1;
+    }
+}

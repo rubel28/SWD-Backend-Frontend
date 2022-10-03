@@ -10,6 +10,7 @@ import city from './modules/utility_settings/city/city';
 
 export default new createStore({
     state: {        
+        route_permission: ['user.can','home.can'],
         //Do not touch. used for theme settings
         layout: 'app',
         is_show_sidebar: true,
@@ -101,9 +102,6 @@ export default new createStore({
     getters: {
         layout(state) {
             return state.layout;
-        },
-        baseUrl(state) {
-            return state.baseUrl;
         },
     },
     action: {},

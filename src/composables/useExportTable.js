@@ -2,10 +2,10 @@
 import jsPDF from "jspdf";
 import 'jspdf-autotable';
 
-const exportTable = (type,items,columns) => {
-    let cols = columns.filter((d) => d != 'action');
+const exportTable = (type,items,columns,file_name) => {
+    let cols = columns;
     let records = items;
-    let filename = 'Country';
+    let filename = file_name;
 
     if (type == 'csv') {
         let coldelimiter = ',';
@@ -80,7 +80,7 @@ const exportTable = (type,items,columns) => {
             pageBreak: 'auto',
             margin: { top: 45 },
             didDrawPage: () => {
-                doc.text('All User', cols.length > 10 ? 535 : 365, 30);
+                doc.text(filename, cols.length > 10 ? 535 : 365, 30);
             },
         });
         doc.save(filename + '.pdf');

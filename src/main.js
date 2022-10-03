@@ -43,6 +43,9 @@ import { ClientTable,ServerTable } from 'v-tables-3';
 // json to excel
 import vue3JsonExcel from 'vue3-json-excel';
 
+// Import SVG Icon
+import SvgIcon from './components/svg/svg-icon';
+app.component("SvgIcon",SvgIcon);
 //vue-wizard
 import VueFormWizard from 'vue3-form-wizard';
 import 'vue3-form-wizard/dist/style.css';

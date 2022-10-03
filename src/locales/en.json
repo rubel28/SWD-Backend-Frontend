@@ -9,5 +9,7 @@
     "province": "Province",
     "city": "City",
     "sales": "Sales",    
-    "more": "More"
+    "more": "More",
+    "role_manage": "Role Manage",
+    "all_roles": "All Roles"
 }
