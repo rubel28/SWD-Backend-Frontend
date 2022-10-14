@@ -32,6 +32,7 @@ axiosClient.interceptors.response.use(response => {
         return Promise.reject(response);
     }
 }, error => {
+    console.log(error);
     if (error.response.status) {
         switch (error.response.status) {
             case 400:

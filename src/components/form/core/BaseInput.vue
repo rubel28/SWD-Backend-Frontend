@@ -11,8 +11,8 @@
             :placeholder="placeholder"
             :class="[ requiredField ? (isSubmitForm ? ( modelValue ? 'is-valid' : 'is-invalid') : '') : '']"
         />
-        <div :v-if="requiredField" class="valid-feedback">Looks good!</div>
-        <div :v-if="requiredField" class="invalid-feedback"> Please fill the {{label}} </div>
+        <div v-if="requiredField" class="valid-feedback">Looks good!</div>
+        <div v-if="requiredField" class="invalid-feedback"> Please fill the {{label}} </div>
     </div>
 </template>
 

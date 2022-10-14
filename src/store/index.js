@@ -7,10 +7,12 @@ import loginHistory from './modules/login_history/login-history';
 import country from './modules/utility_settings/country/country';
 import province from './modules/utility_settings/province/province';
 import city from './modules/utility_settings/city/city';
+import bank from './modules/utility_settings/bank/bank';
+import branch from './modules/utility_settings/bank/branch';
 
 export default new createStore({
     state: {        
-        route_permission: ['user.can','home.can'],
+        //route_permission: ['user.can','home.can'],
         //Do not touch. used for theme settings
         layout: 'app',
         is_show_sidebar: true,
@@ -111,5 +113,7 @@ export default new createStore({
         country,
         province,
         city,
+        bank,
+        branch,
     },
 });

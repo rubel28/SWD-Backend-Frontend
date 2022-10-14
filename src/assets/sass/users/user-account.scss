@@ -236,4 +236,11 @@ Multiselect
     .close:hover {
         opacity: 1;
     }
+
+    .general-info .info label,
+    .details .info label,
+    .contact .info label,
+    .document .info label {
+        /*display: none;*/
+    }
 }

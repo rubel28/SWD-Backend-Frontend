@@ -59,12 +59,12 @@
                                     Permissions
                                 </a>
                             </template>
-                            <template #service="props">
+<!--                            <template #service="props">
                                 <a href="javascript:" class="btn me-2 btn-success" @click="getService(props.row)">
                                     <SvgIcon icon="edit"></SvgIcon>
                                     Services
                                 </a>
-                            </template>
+                            </template>-->
                         </v-client-table>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
     const { showMessage } = useShowMessage();
     const { exportTable } = useExportTable();
     
-    const columns = ref(['id', 'role', 'permission','service', 'actions']);
+    const columns = ref(['id', 'role', 'permission', 'actions']);
     const items = ref([]);
     const table_option = ref({
         perPage: 10,
@@ -128,7 +128,7 @@
     };
     
     const export_table = (type) => {
-        let cols = columns.value.filter((d) => d != 'permission' && d != 'actions'&& d != 'service');
+        let cols = columns.value.filter((d) => d != 'permission' && d != 'actions');
         exportTable(type,items.value,cols,'Roles');    
     };
     

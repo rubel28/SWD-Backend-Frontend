@@ -8,6 +8,8 @@
     "country": "Country",
     "province": "Province",
     "city": "City",
+    "bank": "Bank",
+    "branch": "Branch",
     "sales": "Sales",    
     "more": "More",
     "role_manage": "Role Manage",

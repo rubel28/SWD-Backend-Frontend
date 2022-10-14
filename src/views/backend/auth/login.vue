@@ -163,7 +163,7 @@
             pwd_type.value = 'password';
         }
     }
-    const router = useRouter()
+    const router = useRouter();
     const store = useStore();
     const errorMsg = ref(null);
     const form = {

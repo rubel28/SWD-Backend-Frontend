@@ -1,0 +1,267 @@
+//  =================
+//      Imports
+//  =================
+
+@import '../base/base';    // Base Variables
+
+.actions-btn-tooltip {
+  &.tooltip {
+    opacity: 1;
+    top: -11px !important;
+  }
+
+  .arrow:before {
+    border-top-color: $dark;
+  }
+
+  .tooltip-inner {
+    background: $dark;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 30px;
+    box-shadow: 0px 5px 15px 1px rgba(113, 106, 202, 0.2);
+    padding: 4px 16px;
+  }
+}
+
+.preview-container {
+  width: 100%;
+}
+
+.preview-inbox {
+  padding: 0;
+  background-color: #fff;
+  border: 1px solid $m-color_3;
+  box-shadow: 0 0 40px 0 rgba(94, 92, 154, 0.06);
+  border-radius: 6px;  
+
+}
+
+/*
+===================
+
+     Invoice
+
+===================
+*/
+
+/*    Inv head section   */
+
+.preview .content-section .preview--head-section {
+  padding: 36px 35px;
+  margin-bottom: 40px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid $m-color_2;
+}
+.preview .content-section {
+  .preview--head-section {
+    h3.in-heading {
+      font-size: 18px;
+      font-weight: 600;
+      color: $m-color_10;
+      margin: 0;
+      margin-left: 12px;
+    }
+
+    .company-logo {
+      width: 36px;
+      height: 36px;
+    }    
+
+    .preview-brand-name {
+      font-size: 23px;
+      font-weight: 600;
+      margin-bottom: 0;
+      align-self: center;
+    }
+  }
+    .preview--detail-section-body {
+        padding: 0px 35px;
+        /*padding-top: 0;*/
+    }
+  .preview--detail-section {
+    .preview-to {        
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+
+    .preview-customer-name {
+      font-weight: 700;
+      margin-bottom: 2px;
+      font-size: 13px;
+      color: $primary;
+    }    
+  }
+
+  .preview--table-section {
+    padding: 30px 0;
+
+    table {
+      margin-bottom: 0;
+    }
+
+    thead tr {
+      border: none;
+    }
+
+    th {
+      padding: 9px 22px;
+      font-size: 11px !important;
+      border: none;
+      border-top: 1px solid $m-color_3;
+      border-bottom: 1px solid $m-color_3;
+      color: $m-color_9 !important;
+
+      &:first-child {
+        padding-left: 35px;
+      }
+
+      &:last-child {
+        padding-right: 35px;
+      }
+    }
+
+    tr td {
+      &:first-child {
+        padding-left: 35px;
+      }
+
+      &:last-child {
+        padding-right: 35px;
+      }
+    }
+
+    td {
+      color: $m-color_9;
+      font-weight: 600;
+      border: none;
+      padding: 10px 25px;
+      vertical-align: top !important;
+    }
+
+    tbody tr:nth-of-type(even) td {
+      background-color: $m-color_20;
+    }
+  } 
+}
+
+/*    Inv detail section    */
+
+/*inv-list-number*/
+
+/*inv-created-date*/
+
+/*inv-due-date*/
+
+/*    Inv product table section    */
+
+/*inv--payment-info*/
+
+/*inv--total-amounts*/
+
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #ct {
+    visibility: visible;
+
+    * {
+      visibility: visible;
+    }
+  }
+
+  .doc-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+}
+
+@page {
+  size: auto;
+  margin: 0mm;
+}
+
+/*
+===============================
+    Invoice Actions Button
+===============================
+*/
+
+.preview-actions-btn {
+    padding: 32px 25px;
+    background-color: #fff;
+    border: 1px solid $m-color_3;
+    border-radius: 6px;
+
+  label {
+    font-size: 14px;
+    font-weight: 600;
+    color: $m-color_9;
+  }
+
+  .preview-action-btn a {
+    -webkit-transform: none;
+    transform: none;
+
+    &.btn-send, &.btn-print, &.btn-download {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    &.btn-edit {
+      width: 100%;
+    }
+  }
+}
+
+/* Invoice Actions -> action-btn */
+
+@media (max-width: 1199px) {
+  .preview-actions-btn {
+    margin-top: 25px;
+
+    .preview-action-btn a {
+      &.btn-send, &.btn-print, &.btn-download {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .preview-actions-btn .preview-action-btn a {
+    &.btn-send, &.btn-print {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .preview .content-section {
+    .preview-title {
+        margin: 25px auto 6px 0;
+        width: auto;
+    }
+
+    p {
+      margin-left: 0;
+      margin-right: auto;
+      width: auto;
+      justify-content: flex-start;
+    }
+
+    .preview-subtitle {
+      min-width: 140px;
+    }
+  }
+
+  .preview-actions-btn .preview-action-btn a.btn-download {
+    margin-bottom: 20px;
+  }
+}

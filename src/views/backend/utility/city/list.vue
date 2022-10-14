@@ -259,11 +259,12 @@
     useMeta({ title: 'Province' });
     
     /* variable declaration */
-    const { validation,is_submit_form } = useValidation();
+    const { validation } = useValidation();
     const { showMessage } = useShowMessage();
     const { exportTable } = useExportTable();
     const store = useStore();
     const error = ref(null);
+    const is_submit_form = ref(false);
     let addCityModal = ref(null);
     const params = ref({
         city_name: '',

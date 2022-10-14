@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-6 col-lg-6 col-md-6 layout-spacing">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                             <div class="section permission">
                                 <div class="info">
                                     <h5 class="">Permissions</h5>
@@ -72,7 +72,7 @@
 
                                                     <div class="permission-box">
 <!--                                                        <perfect-scrollbar class="permission-box-scroll" id="ct">-->
-                                                            <div v-for="(item, index) in filtered_permission_list" :key="item.id + '' + index" class="permission-item">
+                                                            <div v-for="(item, index) in filtered_permission_list" :key="item.id + '' + index" class="permission-item" >
                                                                 <div class="animated fadeInUp">
                                                                     <div class="d-flex permission-item-inner">
                                                                         <div class="checkbox-primary custom-control custom-checkbox">
@@ -93,7 +93,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-6 col-lg-6 col-md-6 layout-spacing">
+<!--                        <div class="col-xl-6 col-lg-6 col-md-6 layout-spacing">
                             <div class="section service">
                                 <div class="info">
                                     <h5 class="">Services</h5>
@@ -139,7 +139,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
@@ -172,22 +172,22 @@
     import useShowMessage from "@/composables/useShowMessage";
     useMeta({ title: 'Add Role' });
     /* Import composable file */
-    const { validation,is_submit_form, field_name } = useValidation();
+    const { validation, field_name } = useValidation();
     const { showMessage } = useShowMessage();
     /* end */
 
+    const is_submit_form = ref(false);
     const filtered_permission_list = ref([]);
-    const filtered_service_list = ref([]);
     let permission_list = ref([]);
+    /*const filtered_service_list = ref([]);
     let service_list = ref([]);
+    const search_service = ref('');*/
     const validateData = ref({role_name:''});
     const search_permission = ref('');
-    const search_service = ref('');
     const role_name = ref(null);
     const form = ref({
         role_name:'',
         ids:[],
-        service_ids:[]
     });
 
     // computed
@@ -198,18 +198,18 @@
             return false;
         }
     });
-    const check_all_service_checkbox = computed(() => {
+    /*const check_all_service_checkbox = computed(() => {
         if (filtered_service_list.value.length && form.value.service_ids.length == filtered_service_list.value.length) {
             return true;
         } else {
             return false;
         }
-    });
+    });*/
 
     onMounted(() => {
         feather.replace();
         bind_permission();
-        bind_service();
+        /*bind_service();*/
     })
     
     const bind_permission = () => {
@@ -229,7 +229,7 @@
         ]
         search_permissions();
     }
-    const bind_service = () => {
+    /*const bind_service = () => {
         service_list.value = [
             {id: 1, service_name:'Service name 1'},
             {id: 2, service_name:'Service name 2'},
@@ -240,9 +240,8 @@
             {id: 7, service_name:'Service name 7'},
             {id: 8, service_name:'Service name 8'},
         ]
-        search_permissions();
         search_services();
-    }
+    }*/
 
     const search_permissions = () => {        
         filtered_permission_list.value = permission_list.value.filter(
@@ -250,12 +249,12 @@
                 (d.permission && d.permission.toLowerCase().includes(search_permission.value))
         );
     };
-    const search_services = () => {
+    /*const search_services = () => {
         filtered_service_list.value = service_list.value.filter(
             (d) =>
                 (d.service_name && d.service_name.toLowerCase().includes(search_service.value))
         );
-    };
+    };*/
 
     const check_all = (is_checked) => {
         if (is_checked) {
@@ -266,7 +265,7 @@
             clear_selection(1);
         }
     };
-    const check_all_services = (is_checked) => {
+    /*const check_all_services = (is_checked) => {
         if (is_checked) {
             form.value.service_ids = filtered_service_list.value.map((d) => {
                 return d.id;
@@ -274,14 +273,14 @@
         } else {
             clear_selection(0);
         }
-    };
+    };*/
 
     const clear_selection = (flag) => {
-        if(flag){
-            form.value.ids = [];
+        form.value.ids = [];
+        /*if(flag){
         }else{
             form.value.service_ids = [];
-        }
+        }*/
     };
 
     // Save/Update data to database

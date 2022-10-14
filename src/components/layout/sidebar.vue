@@ -91,6 +91,16 @@
                                 {{$t('city')}}
                             </router-link>
                         </li>
+                        <li>
+                            <router-link to="/bank" @click="toggleMobileMenu">
+                                {{$t('bank')}}
+                            </router-link>
+                        </li>
+                        <li>
+                            <router-link to="/branch" @click="toggleMobileMenu">
+                                {{$t('branch')}}
+                            </router-link>
+                        </li>
                     </ul>
                 </li>
                 <!-- End-->

@@ -35,12 +35,14 @@
                                                     <!-- User Type -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="user-type">User Type</label>
-                                                            <select v-model="form.user_type" @change="user_type_change()" id="user-type" class="form-select">
-                                                                <option value="" disabled>Select User Type</option>
-                                                                <option value="personal">Personal</option>
-                                                                <option value="company">Company</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="user-type"
+                                                                label="User Type"
+                                                                :required-field="false"
+                                                                v-model="form.user_type"
+                                                                @change="user_type_change()"
+                                                                :options="{'personal':'Personal','company':'Company'}"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ User Type -->
@@ -58,13 +60,6 @@
                                                             v-model="form.name"
                                                             :is-submit-form="personal ? is_submit_form:is_submit_form_company"
                                                         />
-<!--                                                        <div class="form-group">
-                                                            <label id="name" for="full_name">Name</label>
-                                                            <input ref="name" v-model="form.name" id="full_name" type="text" class="form-control" placeholder="Name *" 
-                                                                   :class="[(personal ? is_submit_form:is_submit_form_company) ? (form.name ? 'is-valid' : 'is-invalid') : '']" />
-                                                            <div class="valid-feedback">Looks good!</div>
-                                                            <div class="invalid-feedback">Please fill the name</div>
-                                                        </div>-->
                                                     </div>
                                                     <!--/ Name -->
     
@@ -81,23 +76,12 @@
                                                             v-model="form.mobile_number"
                                                             :is-submit-form="personal ? is_submit_form:is_submit_form_company"
                                                         />
-<!--                                                        <div class="form-group">
-                                                            <label id="mobile_number" for="mobile">Mobile Number</label>
-                                                            <input ref="mobile_number" v-model="form.mobile_number"
-                                                                   id="mobile" type="text"
-                                                                   class="form-control"
-                                                                   placeholder="Mobile Number *"
-                                                                   :class="[(personal ? is_submit_form:is_submit_form_company) ? (form.mobile_number ? 'is-valid' : 'is-invalid') : '']"
-                                                            />
-                                                            <div class="valid-feedback">Looks good!</div>
-                                                            <div class="invalid-feedback">Please fill the mobile number</div>
-                                                        </div>-->
                                                     </div>
                                                     <!--/ Mobile Number -->
     
                                                     <!-- Email -->
                                                     <div class="col-md-4">
-                                                        <EInput
+                                                        <BaseEmailInput
                                                             id="e_mail"
                                                             label="Email Address"
                                                             placeholder="Email Address *"
@@ -109,34 +93,22 @@
                                                             :is-submit-form ="personal ? is_submit_form:is_submit_form_company"
                                                             :is-valid-email ="email_validate(form.email)"
                                                         />
-<!--                                                        <div class="form-group">
-                                                            <label id="email" for="e_mail">Email Address</label>
-                                                            <input
-                                                                v-model="form.email"
-                                                                type="email"
-                                                                class="form-control"
-                                                                id="e_mail"
-                                                                placeholder="Email *"
-                                                                :class="[(personal ? is_submit_form:is_submit_form_company) ? ( form.email && email_validate(form.email) ? 'is-valid' : 'is-invalid') : '']"
-                                                            />
-                                                            <div class="valid-feedback">Looks good!</div>
-                                                            <div class="invalid-feedback">Please enter a valid email address.</div>
-                                                        </div>-->
                                                     </div>
                                                     <!--/ Email -->
     
                                                     <!-- Role -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label id="user_role" for="user-role">User Role</label>
-                                                            <select ref="user_role" v-model="form.user_role" id="user-role" class="form-select"
-                                                                    :class="[(personal ? is_submit_form:is_submit_form_company) ? (form.user_role ? 'is-valid' : 'is-invalid') : '']">
-                                                                <option value="" disabled>Select User Role *</option>
-                                                                <option value="admin">Admin</option>
-                                                                <option value="user">User</option>
-                                                            </select>
-                                                            <div class="valid-feedback">Looks good!</div>
-                                                            <div class="invalid-feedback">Please Select User Role</div>
+                                                            <BaseSelect
+                                                                id="user_role"
+                                                                label="User Role"
+                                                                ref="user_role"
+                                                                label-id="user_role"
+                                                                :required-field="true"
+                                                                v-model="form.user_role"
+                                                                :options="{'admin':'Admin','user':'User'}"
+                                                                :is-submit-form="personal ? is_submit_form:is_submit_form_company"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Role -->
@@ -144,12 +116,13 @@
                                                     <!-- Status -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="active_status">Status</label>
-                                                            <select v-model="form.active_status" id="active_status" class="form-select" >
-                                                                <option value="" disabled>Select Status *</option>
-                                                                <option value="ACTIVE">Active</option>
-                                                                <option value="IN-ACTIVE">In-active</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="active_status"
+                                                                label="Status"
+                                                                :required-field="false"
+                                                                v-model="form.active_status"
+                                                                :options="{'ACTIVE':'Active','IN-ACTIVE':'In-active'}"
+                                                            />                                                            
                                                         </div>
                                                     </div>
                                                     <!--/ Status -->
@@ -169,9 +142,14 @@
                                                     <!-- Father Name -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="father-name">Father Name</label>
-                                                            <input ref="father_name" v-model="form.father_name" id="father-name" type="text" class="form-control"
-                                                                   placeholder="Father Name" />                                                        
+                                                            <TInput
+                                                                id="father-name"
+                                                                label="Father Name"
+                                                                placeholder="Father Name"
+                                                                type="text"
+                                                                :required-field="false"
+                                                                v-model="form.father_name"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Father Name -->
@@ -179,9 +157,14 @@
                                                     <!-- Mother Name -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="mother-name">Mother Name</label>
-                                                            <input ref="mother_name" v-model="form.mother_name" id="mother-name" type="text" class="form-control"
-                                                                   placeholder="Mother Name" />
+                                                            <TInput
+                                                                id="mother-name"
+                                                                label="Mother Name"
+                                                                placeholder="Mother Name"
+                                                                type="text"
+                                                                :required-field="false"
+                                                                v-model="form.mother_name"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Mother Name -->
@@ -189,9 +172,14 @@
                                                     <!-- Spouse -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="spouse">Spouse Name</label>
-                                                            <input ref="spouse" v-model="form.spouse_name" id="spouse" type="text" class="form-control"
-                                                                   placeholder="Spouse Name" />
+                                                            <TInput
+                                                                id="spouse"
+                                                                label="Spouse Name"
+                                                                placeholder="Spouse Name"
+                                                                type="text"
+                                                                :required-field="false"
+                                                                v-model="form.spouse_name"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Spouse -->
@@ -212,13 +200,13 @@
                                                     <!-- Gender -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="gender">Gender</label>
-                                                            <select v-model="form.gender" id="gender" class="form-select">
-                                                                <option value="" disabled>Select gender</option>
-                                                                <option value="male">Male</option>
-                                                                <option value="female">Female</option>
-                                                                <option value="other">Other</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="gender"
+                                                                label="Gender"
+                                                                :required-field="false"
+                                                                v-model="form.gender"
+                                                                :options="{'male':'Male','female':'Female','other':'Other'}"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Gender -->
@@ -226,27 +214,26 @@
                                                     <!-- Marital Status -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="marital-status">Marital Status</label>
-                                                            <select v-model="form.marital_status" id="marital-status" class="form-select">
-                                                                <option value="" disabled>Select Marital Status</option>
-                                                                <option value="married">Married</option>
-                                                                <option value="unmarried">Unmarried</option>
-                                                                <option value="other">Other</option>
-                                                            </select>
-                                                        </div>
+                                                            <BaseSelect
+                                                                id="marital-status"
+                                                                label="Marital Status"
+                                                                :required-field="false"
+                                                                v-model="form.marital_status"
+                                                                :options="{'married':'Married','unmarried':'Unmarried','other':'Other'}"
+                                                            />                                                        </div>
                                                     </div>
                                                     <!--/ Marital Status -->
     
                                                     <!-- Nationality -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="nationality">Nationality</label>
-                                                            <select v-model="form.nationality" id="nationality" class="form-select" >
-                                                                <option value="" disabled>Select nationality</option>
-                                                                <option value="bd">Bangladesh</option>
-                                                                <option value="sg">Singapore</option>
-                                                                <option value="myr">Malaysia</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="nationality"
+                                                                label="Nationality"
+                                                                :required-field="false"
+                                                                v-model="form.nationality"
+                                                                :options="{bd:'Bangladesh',sg:'Singapore',myr:'Malaysia'}"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Nationality -->
@@ -254,13 +241,13 @@
                                                     <!-- Occupation -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="occupation">Occupation</label>
-                                                            <select v-model="form.occupation" id="occupation" class="form-select">
-                                                                <option value="" disabled>Select occupation</option>
-                                                                <option value="private_service">Private Service</option>
-                                                                <option value="worker">Worker</option>
-                                                                <option value="business">Business</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="occupation"
+                                                                label="Occupation"
+                                                                :required-field="false"
+                                                                v-model="form.occupation"
+                                                                :options="{private_service:'Private Service',worker:'Worker',business:'Business'}"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Occupation -->
@@ -268,14 +255,16 @@
                                                     <!-- ID Type * -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label id="id_type" for="id-type">ID Type</label>
-                                                            <select ref="id_type" v-model="form.id_type" id="id-type" class="form-select" :class="[is_submit_form ? (form.id_type ? 'is-valid' : 'is-invalid') : '']">
-                                                                <option value="" disabled>Select ID Type *</option>
-                                                                <option value="passport">Passport</option>
-                                                                <option value="id">ID</option>
-                                                            </select>
-                                                            <div class="valid-feedback">Looks good!</div>
-                                                            <div class="invalid-feedback">Please select ID type</div>
+                                                            <BaseSelect
+                                                                id="id-type"
+                                                                label="ID Type"
+                                                                ref="id_type"
+                                                                label-id="id_type"
+                                                                :required-field="true"
+                                                                v-model="form.id_type"
+                                                                :options="{'passport':'Passport','id':'ID'}"
+                                                                :is-submit-form="is_submit_form"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ ID Type -->
@@ -283,15 +272,17 @@
                                                     <!-- ID No * -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label id="id_no" for="id-no">ID Number</label>
-                                                            <input ref="id_no" v-model="form.id_no"
-                                                                   id="id-no" type="text"
-                                                                   class="form-control"
-                                                                   placeholder="ID Number *"
-                                                                   :class="[is_submit_form ? (form.id_no ? 'is-valid' : 'is-invalid') : '']"
-                                                            />
-                                                            <div class="valid-feedback">Looks good!</div>
-                                                            <div class="invalid-feedback">Please fill the ID number</div>
+                                                            <TInput
+                                                                id="id-no"
+                                                                label="ID Number"
+                                                                placeholder="ID Number *"
+                                                                ref="id_no"
+                                                                label-id="id_no"
+                                                                type="text"
+                                                                :required-field="true"
+                                                                v-model="form.id_no"
+                                                                :is-submit-form="is_submit_form"
+                                                            />                                                            
                                                         </div>
                                                     </div>
                                                     <!--/ ID No -->
@@ -326,15 +317,16 @@
                                                     <!-- ID Issue Country * -->
                                                     <div v-show="personal" class="col-md-4">
                                                         <div class="form-group">
-                                                            <label id="issue_country" for="issue-country">ID Issue Country</label>
-                                                            <select ref="issue_country" v-model="form.issue_country" id="issue-country" class="form-select" :class="[is_submit_form ? (form.issue_country ? 'is-valid' : 'is-invalid') : '']">
-                                                                <option value="" disabled>Select Country *</option>
-                                                                <option value="bd">Bangladesh</option>
-                                                                <option value="sg">Singapore</option>
-                                                                <option value="myr">Malaysia</option>
-                                                            </select>
-                                                            <div class="valid-feedback">Looks good!</div>
-                                                            <div class="invalid-feedback">Please Select the Country</div>
+                                                            <BaseSelect
+                                                                id="issue-country"
+                                                                label="ID Issue Country"
+                                                                ref="issue_country"
+                                                                label-id="issue_country"
+                                                                :required-field="true"
+                                                                v-model="form.issue_country"
+                                                                :options="{bd:'Bangladesh',sg:'Singapore',myr:'Malaysia'}"
+                                                                :is-submit-form="is_submit_form"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ ID Issue Country -->
@@ -342,12 +334,13 @@
                                                     <!-- KYC Status -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="kyc_status">KYC Status</label>
-                                                            <select v-model="form.kyc_status" id="kyc_status" class="form-select">
-                                                                <option value="" disabled>Select Status</option>
-                                                                <option value="success">Success</option>
-                                                                <option value="pending">Pending</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="kyc_status"
+                                                                label="KYC Status"
+                                                                :required-field="false"
+                                                                v-model="form.kyc_status"
+                                                                :options="{success:'Success',pending:'Pending',canceled:'Canceled'}"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ KYC Status -->
@@ -355,17 +348,31 @@
                                                     <!-- Risk Profiling -->
                                                     <div v-show="personal" class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="risk_profile">Risk Profiling</label>
-                                                            <select v-model="form.risk_profile" id="risk_profile" class="form-select" >
-                                                                <option value="" disabled>Select Risk</option>
-                                                                <option value="high">High</option>
-                                                                <option value="medium">Medium</option>
-                                                                <option value="low">Low</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="risk_profile"
+                                                                label="Risk Profiling"
+                                                                :required-field="false"
+                                                                v-model="form.risk_profile"
+                                                                :options="{high:'High',medium:'Medium',low:'Low'}"
+                                                            />
                                                         </div>
                                                     </div>
-                                                    <!--/ Risk Profiling -->
-                                                
+                                                    <!--/ Risk Profiling -->                                               
+                                                    
+                                                    <!-- Source Fund -->
+                                                    <div v-show="personal" class="col-md-6">
+                                                        <div class="form-group">
+                                                            <BaseSelect
+                                                                id="source_fund"
+                                                                label="Source of Fund"
+                                                                :required-field="false"
+                                                                v-model="form.source_fund"
+                                                                :options="{salary:'Salary',business:'Business'}"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <!--/ Source Fund -->
+
                                                     <!-- Source Wealth -->
                                                     <div v-show="personal" class="col-md-6">
                                                         <div class="form-group select2">
@@ -386,31 +393,17 @@
                                                         </div>
                                                     </div>
                                                     <!--/ Source Wealth -->
-                                                    
-                                                    <!-- Source Fund -->
-                                                    <div v-show="personal" class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="source_fund">Source of Fund</label>
-                                                            <select v-model="form.source_fund" id="source_fund" class="form-select" >
-                                                                <option value="" disabled>Select item</option>
-                                                                <option value="bd">Bangladesh</option>
-                                                                <option value="sg">Singapore</option>
-                                                                <option value="myr">Malaysia</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <!--/ Source Fund -->
 
                                                     <!-- Business Category -->
                                                     <div v-show="!personal" class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="business_category">Business Category</label>
-                                                            <select v-model="form.business_category" id="business_category" class="form-select">
-                                                                <option value="" disabled>Select Business Category</option>
-                                                                <option value="1">Category 1</option>
-                                                                <option value="2">Category 2</option>
-                                                                <option value="3">Category 3</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="business_category"
+                                                                label="Business Category"
+                                                                :required-field="false"
+                                                                v-model="form.business_category"
+                                                                :options="{1:'Category 1',2:'Category 2',3:'Category 3'}"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Business Category -->
@@ -418,15 +411,17 @@
                                                     <!-- Company Registration No -->
                                                     <div v-show="!personal" class="col-md-4">
                                                         <div class="form-group">
-                                                            <label id="company_reg_no" for="company-reg-no">Company Registration No</label>
-                                                            <input ref="company_reg_no" v-model="form.company_reg_no"
-                                                                   id="company-reg-no" type="text"
-                                                                   class="form-control"
-                                                                   placeholder="Company Registration No *"
-                                                                   :class="[is_submit_form_company ? (form.company_reg_no ? 'is-valid' : 'is-invalid') : '']"
-                                                            />
-                                                            <div class="valid-feedback">Looks good!</div>
-                                                            <div class="invalid-feedback">Please fill the registration number</div>
+                                                            <TInput
+                                                                id="company-reg-no"
+                                                                label="Company Registration No"
+                                                                placeholder="Company Registration No *"
+                                                                ref="company_reg_no"
+                                                                label-id="company_reg_no"
+                                                                type="text"
+                                                                :required-field="true"
+                                                                v-model="form.company_reg_no"
+                                                                :is-submit-form="is_submit_form_company"
+                                                            />                                                            
                                                         </div>
                                                     </div>
                                                     <!--/ Company Registration No -->
@@ -469,17 +464,16 @@
                                                     <!-- Contact Email -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="contact_email">Contact Email Address</label>
-                                                            <input
-                                                                v-model="form.contact_email"
-                                                                type="email"
-                                                                class="form-control"
+                                                            <BaseEmailInput
                                                                 id="contact_email"
+                                                                label="Contact Email Address"
                                                                 placeholder="Contact Email Address"
-                                                                :class="[ form.contact_email ? email_validate(form.contact_email) ? 'is-valid' : 'is-invalid':'']"
-                                                            />
-                                                            <div class="valid-feedback">Looks good!</div>
-                                                            <div class="invalid-feedback">Please enter a valid email address.</div>
+                                                                type="email"
+                                                                :required-field="false"
+                                                                v-model="form.contact_email"
+                                                                :is-submit-form="is_submit_form_company"
+                                                                :is-valid-email ="email_validate(form.contact_email)"
+                                                            />                                                            
                                                         </div>
                                                     </div>
                                                     <!--/ Contact Email -->
@@ -488,8 +482,14 @@
                                                     <!-- Present/Company Address -->
                                                     <div class="col-md-9">
                                                         <div class="form-group">
-                                                            <label for="address">{{personal ?'Present':'Company'}} Address</label>
-                                                            <input v-model="form.address" id="address" type="text" class="form-control" :placeholder="[[personal ? 'Present':'Company']] + ' Address'" />
+                                                            <TInput
+                                                                id="address"
+                                                                :label="personal ? 'Present':'Company'"
+                                                                :placeholder="personal ? 'Present Address':'Company Address'"
+                                                                type="text"
+                                                                :required-field="false"
+                                                                v-model="form.address"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Present Address -->
@@ -497,8 +497,14 @@
                                                     <!-- Present Post Code -->
                                                     <div class="col-md-3">
                                                         <div class="form-group">
-                                                            <label for="postCode">Post Code</label>
-                                                            <input v-model="form.post_code" id="postCode" type="text" class="form-control" placeholder="Post code" />
+                                                            <TInput
+                                                                id="postCode"
+                                                                label="Post Code"
+                                                                placeholder="Post Code"
+                                                                type="text"
+                                                                :required-field="false"
+                                                                v-model="form.post_code"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Present Post Code -->
@@ -506,13 +512,13 @@
                                                     <!-- present Country -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="country">Country</label>
-                                                            <select v-model="form.country" id="country" class="form-select" >
-                                                                <option value="" disabled>Select Country</option>
-                                                                <option value="bd">Bangladesh</option>
-                                                                <option value="sg">Singapore</option>
-                                                                <option value="myr">Malaysia</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="country"
+                                                                label="Country"
+                                                                :required-field="false"
+                                                                v-model="form.country"
+                                                                :options="{bd:'Bangladesh',sg:'Singapore',myr:'Malaysia'}"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ present Country -->
@@ -520,13 +526,13 @@
                                                     <!-- present province -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="province">Province</label>
-                                                            <select v-model="form.province" id="province" class="form-select">
-                                                                <option value="" disabled>Select province</option>
-                                                                <option value="bd">Bangladesh</option>
-                                                                <option value="sg">Singapore</option>
-                                                                <option value="myr">Malaysia</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="province"
+                                                                label="Province"
+                                                                :required-field="false"
+                                                                v-model="form.province"
+                                                                :options="{bd:'Bangladesh',sg:'Singapore',myr:'Malaysia'}"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ present province -->
@@ -534,13 +540,13 @@
                                                     <!-- present city -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="city">City</label>
-                                                            <select v-model="form.city" id="city" class="form-select">
-                                                                <option value="" disabled>Select city</option>
-                                                                <option value="bd">Bangladesh</option>
-                                                                <option value="sg">Singapore</option>
-                                                                <option value="myr">Malaysia</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="city"
+                                                                label="City"
+                                                                :required-field="false"
+                                                                v-model="form.city"
+                                                                :options="{dhaka:'Dhaka',khulna:'Khulna',sylhet:'Sylhet'}"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ present city -->
@@ -555,8 +561,14 @@
                                                     <!-- Permanent Address -->
                                                     <div class="col-md-9">
                                                         <div class="form-group">
-                                                            <label for="permanent-address">Permanent Address</label>
-                                                            <input v-model="form.permanent_address" id="permanent-address" type="text" class="form-control" placeholder="Permanent Address" />
+                                                            <TInput
+                                                                id="permanent-address"
+                                                                label="Permanent Address"
+                                                                placeholder="Permanent Address"
+                                                                type="text"
+                                                                :required-field="false"
+                                                                v-model="form.permanent_address"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Permanent Address -->
@@ -564,8 +576,14 @@
                                                     <!-- Permanent Post Code -->
                                                     <div class="col-md-3">
                                                         <div class="form-group">
-                                                            <label for="permanent-postCode">Post Code</label>
-                                                            <input v-model="form.permanent_post_code" id="permanent-postCode" type="text" class="form-control" placeholder="Post code" />
+                                                            <TInput
+                                                                id="permanent-postCode"
+                                                                label="Post Code"
+                                                                placeholder="Post Codes"
+                                                                type="text"
+                                                                :required-field="false"
+                                                                v-model="form.permanent_post_code"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Permanent Post Code -->
@@ -573,13 +591,13 @@
                                                     <!-- Permanent Country -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="permanent-country">Country</label>
-                                                            <select v-model="form.permanent_country" id="permanent-country" class="form-select" >
-                                                                <option value="" disabled>Select Country</option>
-                                                                <option value="bd">Bangladesh</option>
-                                                                <option value="sg">Singapore</option>
-                                                                <option value="myr">Malaysia</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="permanent-country"
+                                                                label="Country"
+                                                                :required-field="false"
+                                                                v-model="form.permanent_country"
+                                                                :options="{bd:'Bangladesh',sg:'Singapore',myr:'Malaysia'}"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Permanent Country -->
@@ -587,13 +605,13 @@
                                                     <!-- Permanent province -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="permanent-province">Province</label>
-                                                            <select v-model="form.permanent_province" id="permanent-province" class="form-select">
-                                                                <option value="" disabled>Select province</option>
-                                                                <option value="bd">Bangladesh</option>
-                                                                <option value="sg">Singapore</option>
-                                                                <option value="myr">Malaysia</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="permanent-province"
+                                                                label="Province"
+                                                                :required-field="false"
+                                                                v-model="form.permanent_province"
+                                                                :options="{bd:'Bangladesh',sg:'Singapore',myr:'Malaysia'}"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Permanent province -->
@@ -601,13 +619,13 @@
                                                     <!-- Permanent city -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
-                                                            <label for="permanent-city">City</label>
-                                                            <select v-model="form.permanent_city" id="permanent-city" class="form-select">
-                                                                <option value="" disabled>Select city</option>
-                                                                <option value="bd">Bangladesh</option>
-                                                                <option value="sg">Singapore</option>
-                                                                <option value="myr">Malaysia</option>
-                                                            </select>
+                                                            <BaseSelect
+                                                                id="permanent-city"
+                                                                label="City"
+                                                                :required-field="false"
+                                                                v-model="form.permanent_city"
+                                                                :options="{dhaka:'Dhaka',khulna:'Khulna',sylhet:'Sylhet'}"
+                                                            />
                                                         </div>
                                                     </div>
                                                     <!--/ Permanent city -->
@@ -683,7 +701,7 @@
                 </div>
                 <div class="account-settings-footer">
                     <div class="as-footer-container">
-                        <button type="button" class="btn btn-primary" @click="reset_from()">Reset All</button>
+                        <button type="button" class="btn btn-danger" @click="handle_cancel()">Cancel</button>
                         <button type="submit" class="btn btn-success">Save Changes</button>
                     </div>
                 </div>
@@ -692,6 +710,13 @@
     </div>
 </template>
 
+<style>
+.multiselect {
+    border: 1px solid #bfc9d4;
+    border-radius: 6px;
+}
+</style>
+
 <script setup>
 import {nextTick, onMounted, ref} from 'vue';
     import '@/assets/sass/scrollspyNav.scss';
@@ -699,8 +724,9 @@ import {nextTick, onMounted, ref} from 'vue';
     import feather from 'feather-icons';
     import Multiselect from '@suadelabs/vue3-multiselect';
     import '@suadelabs/vue3-multiselect/dist/vue3-multiselect.css';
-    import TInput from '@/components/form/core/TInput.vue';
-    import EInput from '@/components/form/core/EInput.vue';
+    import TInput from '@/components/form/core/BaseInput.vue';
+    import BaseEmailInput from '@/components/form/core/BaseEmailInput.vue';
+    import BaseSelect from '@/components/form/core/BaseSelect.vue';
     //flatpickr
     import flatPickr from 'vue-flatpickr-component';
     import 'flatpickr/dist/flatpickr.css';
@@ -709,10 +735,12 @@ import {nextTick, onMounted, ref} from 'vue';
     import { useMeta } from '@/composables/use-meta';
     import useValidation from "@/composables/useValidation";
     import useShowMessage from "@/composables/useShowMessage";
+    import { useRouter } from 'vue-router';
 
     useMeta({ title: 'New User' });
+    const router = useRouter()
     /* Import composable file */
-    const { validation,email_validate,is_submit_form, field_name } = useValidation();
+    const { validation,email_validate, field_name } = useValidation();
     const { showMessage } = useShowMessage();
     /* end */
 
@@ -735,6 +763,7 @@ import {nextTick, onMounted, ref} from 'vue';
     /* end */
 
     /* For Required Field Validation*/
+    const is_submit_form = ref(false);
     const is_submit_form_company = ref(false);
     const name = ref(null);
     const mobile_number = ref(null);
@@ -811,6 +840,7 @@ import {nextTick, onMounted, ref} from 'vue';
 
     // Save/Update data to database
     const submit_form = () => {
+        console.log(form.value);
         setFieldValidation();
         if (validation(personal.value ? validatePersonalData:validateCompanyData)) {
             //form validated success
@@ -851,6 +881,10 @@ import {nextTick, onMounted, ref} from 'vue';
         reader.readAsDataURL(file);
     }
     
+    /* Cancel*/
+    const handle_cancel = () => {
+        router.push({name:'users'});
+    };
     /* Reset form */
     const reset_from = () => {
         form.value.user_role = '';

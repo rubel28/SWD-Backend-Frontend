@@ -9,10 +9,10 @@
             @input="emits('update:modelValue', $event.target.value)"
             class="form-control"
             :placeholder="placeholder"
-            :class="[ requiredField ? (isSubmitForm ? ((modelValue && isValidEmail) ? 'is-valid' : 'is-invalid') : '') : '']"
+            :class="[ requiredField ? (isSubmitForm ? ((modelValue && isValidEmail) ? 'is-valid' : 'is-invalid') : '') : (isSubmitForm && modelValue) ? (isValidEmail ? 'is-valid' : 'is-invalid'):'']"
         />
-        <div :v-if="requiredField" class="valid-feedback">Looks good!</div>
-        <div :v-if="requiredField" class="invalid-feedback"> Please enter a valid {{label}} </div>
+        <div :v-if="!isValidEmail" class="valid-feedback">Looks good!</div>
+        <div :v-if="!isValidEmail" class="invalid-feedback"> Please enter a valid {{label}} </div>
     </div>
 </template>
 
@@ -57,7 +57,6 @@ const props = defineProps({
 
 const emits = defineEmits(["update:modelValue"]);
 const root = ref(null);
-
 
 const focus = () => root.value.focus();
 defineExpose({focus})

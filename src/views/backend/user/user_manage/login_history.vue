@@ -73,7 +73,7 @@
     const store = useStore();
     const error = ref(null);
 
-    const columns = ref(['user_name', 'mobile_number','browser', 'iP', 'address', 'mac_address','login_status','date']);
+    const columns = ref(['user_name', 'mobile_number','browser', 'iP', 'address','login_status','date']);
     //const items = ref([]);
     const table_option = ref({
         perPage: 10,
@@ -87,7 +87,7 @@
             filterPlaceholder: 'Search...',
             limit: 'Results:',
         },
-        sortable: ['user_name', 'mobile_number','browser', 'iP', 'address', 'mac_address','login_status','date'],
+        sortable: ['user_name', 'mobile_number','browser', 'iP', 'address','login_status','date'],
         sortIcon: {
             base: 'sort-icon-none',
             up: 'sort-icon-asc',

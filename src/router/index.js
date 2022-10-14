@@ -16,7 +16,7 @@ const routes = [
 
     //dashboard    
     { path: '/dashboard', name: 'Home',
-        component: () => import('../views/backend/dashboard/index.vue'),
+        component: () => import('../views/backend/dashboard/index1.vue'),
         meta: { requiresAuth: true } },
 
     //User Manage
@@ -81,7 +81,26 @@ const routes = [
         component: () => import('../views/backend/utility/city/list'),
         meta: { requiresAuth: true }
     },
-    
+    // bank
+    {
+        path: '/bank',
+        name: 'bank',
+        component: () => import('../views/backend/utility/bank/list'),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/bank/:id/preview',
+        name: 'bank.preview',
+        component: () => import('../views/backend/utility/bank/preview'),
+        meta: { requiresAuth: true }
+    },
+    // bank
+    {
+        path: '/branch',
+        name: 'branch',
+        component: () => import('../views/backend/utility/branch/list'),
+        meta: { requiresAuth: true }
+    },
     //Logout
     {
         path: '/logout',
@@ -97,7 +116,7 @@ const routes = [
         meta: { layout: 'auth' }
     },
     {
-        path:'/:catchAll(.*)',
+        path:'/:pathMatch(.*)*',
         name: 'error404',
         component: () => import('../views/backend/error/error404'),
         meta: { layout: 'auth' }
