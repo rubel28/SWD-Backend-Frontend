@@ -395,8 +395,26 @@
                         </router-link>
                     </li>
                     <!--End-->
-                    
+
                     <!--Role Manage menu start-->
+                    <li class="menu single-menu">
+                        <a href="javascript:;" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="user-x"></i>
+                                <span>{{ $t('role_manage') }}</span>
+                            </div>
+                            <i data-feather="chevron-down"></i>
+                        </a>
+                        <ul class="collapse submenu list-unstyled">
+                            <li><router-link to="/roles">{{$t('all_roles')}}</router-link></li>
+                        </ul>
+                        <ul class="collapse submenu list-unstyled">
+                            <li><router-link to="/permissions">{{$t('permissions')}}</router-link></li>
+                        </ul>
+                    </li>
+                    <!--End-->
+                    
+                    <!--User Manage menu start-->
                     <li class="menu single-menu">
                         <a href="javascript:;" class="dropdown-toggle">
                             <div class="">
@@ -436,22 +454,8 @@
                                                         </li>-->
                         </ul>
                     </li>
-                    <!-- end -->
+                    <!-- end -->                   
                     
-                    <!--User Manage menu start-->
-                    <li class="menu single-menu">
-                        <a href="javascript:;" class="dropdown-toggle">
-                            <div class="">
-                                <i data-feather="user-x"></i>
-                                <span>{{ $t('role_manage') }}</span>
-                            </div>
-                            <i data-feather="chevron-down"></i>                            
-                        </a>
-                        <ul class="collapse submenu list-unstyled">
-                            <li><router-link to="/roles">{{$t('all_roles')}}</router-link></li>
-                        </ul>
-                    </li>
-                    <!--End-->
                     <!--Utility settings menu start-->
                     <li class="menu single-menu">
                         <a href="javascript:;" class="dropdown-toggle">
@@ -463,7 +467,7 @@
                         </a>
                         <ul class="collapse submenu list-unstyled">
                             <li><router-link to="/country">{{$t('country')}}</router-link></li>
-                            <li><router-link to="/province">{{$t('province')}}</router-link></li>
+                            <li><router-link to="/state">{{$t('state')}}</router-link></li>
                             <li><router-link to="/city">{{$t('city')}}</router-link></li>
                             <li><router-link to="/bank">{{$t('bank')}}</router-link></li>
                             <li><router-link to="/branch">{{$t('branch')}}</router-link></li>

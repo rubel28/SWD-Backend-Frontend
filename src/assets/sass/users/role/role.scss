@@ -21,10 +21,10 @@
     font-weight: 700;
     font-size: 16px;
     text-transform: uppercase;    
-    border-bottom: solid 1px #bfc9d4;
-    //margin-bottom: 15px !important;
+    //border-bottom: solid 1px #bfc9d4;
+    //margin-bottom: 15px !important;  
+    
 }
-
 
 /*
     role-info
@@ -64,6 +64,27 @@
         color: $m-color_6;
         font-size: 13px;
         letter-spacing: 1px;
+    }
+    
+    .underline{
+        border-bottom: solid 1px #bfc9d4 !important;
+    }
+
+    .search {
+        display: flex;
+        //border-bottom: 1px solid #e0e6ed;
+        background: #ebedf2;
+        margin-right: 10px;
+        box-shadow: 0 0 5px 2px #f1f2f3;
+        input {
+            border: none;
+            padding: 8px 18px 12px 18px;
+            background-color: #fff;
+            border-radius: 0;
+            &:focus {
+                box-shadow: 0 0 5px 2px #f1f2f3;
+            }
+        }
     }
 }
 
@@ -112,7 +133,7 @@
     width: 100%;
     background: rgb(249, 249, 249);    
 
-    .search {
+    /*.search {
         display: flex;
         border-bottom: 1px solid #e0e6ed;
         background: #ebedf2;
@@ -126,13 +147,13 @@
                 box-shadow: 0 0 5px 2px #f1f2f3;
             }
         }
-    }
+    }*/
 
     .action-center {
         display: flex;
         justify-content: space-between;
-        background: transparent;
-        padding: 14px 25px;
+        background: #fff;
+        padding: 14px 25px 8px 25px;
         border-bottom: 1px solid #e0e6ed;
 
         .new-control {
@@ -141,7 +162,7 @@
         }        
     }
     .permission-box {
-        padding: 0 0 0 0;
+        padding: 0 0 0 0;       
 
         .permission-box-scroll {
             position: relative;
@@ -150,21 +171,25 @@
             overflow: auto;
             height: calc(100vh - 284px);
         }
+        
+        .row-item {
+            margin: 10px 10px;
+        }
     }
 
     .permission-item {
         padding: 8px 10px 5px 0;
         cursor: pointer;
         position: relative;
-        background: #fff;
+        background: transparent;
         -webkit-transition: all 0.35s ease;
         transition: all 0.35s ease;
-        margin: 9px;
-        border: 1px solid #e0e6ed;
+        margin: 9px 0px;
+        /*border: 1px solid #e0e6ed;*/
         border-radius: 6px;
         &:hover {
             background: #ebedf2;
-            border: 1px solid #151516 !important;
+            border: 0px solid #151516 !important;
         }
         .permission-item-inner {
             padding-left: 15px;
@@ -277,5 +302,12 @@ Multiselect
 @media (max-width: 767px) {   
     .close:hover {
         opacity: 1;
+    }
+
+    .permission {       
+        .search {
+            margin: 0px 10px 5px 9px;
+            
+        }
     }
 }

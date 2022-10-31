@@ -42,9 +42,15 @@ const routes = [
         component: () => import('../views/backend/user/role/list'),
         meta: { requiresAuth: true }
     },
-    {   path: '/role/add',
-        name: 'role-add',
-        component: () => import('../views/backend/user/role/add'),
+    {   path: '/role/:id/permission',
+        name: 'role-permission',
+        component: () => import('../views/backend/user/role/role_permission'),
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/permissions',
+        name: 'permissions',
+        component: () => import('../views/backend/user/permission/list'),
         meta: { requiresAuth: true }
     },
     // Utility settings
@@ -67,11 +73,11 @@ const routes = [
         component: () => import('../views/backend/utility/country/edit'),
         meta: { requiresAuth: true }
     },
-    // province
+    // state
     {
-        path: '/province',
-        name: 'province',
-        component: () => import('../views/backend/utility/province/list'),
+        path: '/state',
+        name: 'state',
+        component: () => import('../views/backend/utility/state/list'),
         meta: { requiresAuth: true }
     },
     // City

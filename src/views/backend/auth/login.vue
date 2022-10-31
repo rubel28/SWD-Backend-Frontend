@@ -53,7 +53,7 @@
                                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                             <circle cx="12" cy="7" r="4"></circle>
                                         </svg>
-                                        <input id="username" type="text" class="form-control" placeholder="e.g 6500000000" v-model="form.mobile_number" required />
+                                        <input id="username" type="text" class="form-control" placeholder="e.g 6500000000" v-model="form.login" required />
                                     </div>
 
                                     <div id="password-field" class="field-wrapper input mb-2">
@@ -167,7 +167,8 @@
     const store = useStore();
     const errorMsg = ref(null);
     const form = {
-        mobile_number: '6501521209',
+        login: '6501521209',
+        //mobile_number: '6501521209',
         password: 'abc123'
     }
     const loadingSubmitted = computed(() =>  store.state.login.loginSubmit.loading);

@@ -98,32 +98,28 @@
     
                                                     <!-- Role -->
                                                     <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <BaseSelect
-                                                                id="user_role"
-                                                                label="User Role"
-                                                                ref="user_role"
-                                                                label-id="user_role"
-                                                                :required-field="true"
-                                                                v-model="form.user_role"
-                                                                :options="{'admin':'Admin','user':'User'}"
-                                                                :is-submit-form="personal ? is_submit_form:is_submit_form_company"
-                                                            />
-                                                        </div>
+                                                        <BaseSelect
+                                                            id="user_role"
+                                                            label="User Role"
+                                                            ref="user_role"
+                                                            label-id="user_role"
+                                                            :required-field="true"
+                                                            v-model="form.user_role"
+                                                            :options="{'admin':'Admin','user':'User'}"
+                                                            :is-submit-form="personal ? is_submit_form:is_submit_form_company"
+                                                        />
                                                     </div>
                                                     <!--/ Role -->
     
                                                     <!-- Status -->
                                                     <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <BaseSelect
-                                                                id="active_status"
-                                                                label="Status"
-                                                                :required-field="false"
-                                                                v-model="form.active_status"
-                                                                :options="{'ACTIVE':'Active','IN-ACTIVE':'In-active'}"
-                                                            />                                                            
-                                                        </div>
+                                                        <BaseSelect
+                                                            id="active_status"
+                                                            label="Status"
+                                                            :required-field="false"
+                                                            v-model="form.active_status"
+                                                            :options="{'ACTIVE':'Active','IN-ACTIVE':'In-active'}"
+                                                        />                                                            
                                                     </div>
                                                     <!--/ Status -->
                                                 </div>
@@ -141,16 +137,14 @@
                                                 <div v-show="personal" class="row">
                                                     <!-- Father Name -->
                                                     <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <TInput
-                                                                id="father-name"
-                                                                label="Father Name"
-                                                                placeholder="Father Name"
-                                                                type="text"
-                                                                :required-field="false"
-                                                                v-model="form.father_name"
-                                                            />
-                                                        </div>
+                                                        <TInput
+                                                            id="father-name"
+                                                            label="Father Name"
+                                                            placeholder="Father Name"
+                                                            type="text"
+                                                            :required-field="false"
+                                                            v-model="form.father_name"
+                                                        />
                                                     </div>
                                                     <!--/ Father Name -->
     
@@ -523,7 +517,7 @@
                                                     </div>
                                                     <!--/ present Country -->
                                                     
-                                                    <!-- present province -->
+                                                    <!-- present state -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <BaseSelect
@@ -535,7 +529,7 @@
                                                             />
                                                         </div>
                                                     </div>
-                                                    <!--/ present province -->
+                                                    <!--/ present state -->
                                                     
                                                     <!-- present city -->
                                                     <div class="col-md-4">
@@ -602,7 +596,7 @@
                                                     </div>
                                                     <!--/ Permanent Country -->
     
-                                                    <!-- Permanent province -->
+                                                    <!-- Permanent state -->
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <BaseSelect
@@ -614,7 +608,7 @@
                                                             />
                                                         </div>
                                                     </div>
-                                                    <!--/ Permanent province -->
+                                                    <!--/ Permanent state -->
     
                                                     <!-- Permanent city -->
                                                     <div class="col-md-4">

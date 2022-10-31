@@ -12,15 +12,15 @@
                                     </a>
                                 </li>
                                 <li class="breadcrumb-item"><a href="javascript:;">Role Manage</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><span>Roles</span></li>
+                                <li class="breadcrumb-item active" aria-current="page"><span>Permissions</span></li>
                             </ol>
                         </nav>
                     </div>
                 </li>
             </ul>
         </teleport>
-        <Loader v-if="loading"></Loader>
-        <div v-else class="row layout-top-spacing">
+<!--        <Loader v-if="loading"></Loader>-->
+        <div class="row layout-top-spacing">
             <div class="col-12 layout-spacing">
                 <div class="panel br-6">
                     <div class="custom-table panel-body p-0">
@@ -33,14 +33,13 @@
                             </div>
                             <div>
                                 <button variant="primary" class="btn m-1 btn-primary" @click="export_table('csv')">CSV</button>
-                                <vue3-json-excel class="btn btn-primary m-1" name="roles.xls" :fields="excel_columns()" :json-data="excel_items()">Excel</vue3-json-excel>
+                                <vue3-json-excel class="btn btn-primary m-1" name="permissions.xls" :fields="excel_columns()" :json-data="excel_items()">Excel</vue3-json-excel>
                                 <button variant="primary" class="btn m-1 btn-primary" @click="export_table('print')">Print</button>
                                 <button variant="primary" class="btn m-1 btn-primary" @click="export_table('pdf')">PDF</button>
                             </div>
                         </div>
 
-                        <v-client-table :data="items" :columns="columns" :options="table_option">
-
+                        <v-server-table ref="table" :columns="columns" :options="table_option">
                             
                             <template #actions="props">
                                 <a href="javascript:void(0);" title="View" data-bs-toggle="tooltip" data-bs-placement="top">
@@ -52,30 +51,18 @@
                                 <a href="javascript:void(0);" @click="handle_delete(props.row.id)" title="Delete" data-bs-toggle="tooltip" data-bs-placement="top">
                                     <SvgIcon icon="trash"></SvgIcon>                                    
                                 </a>
-                            </template>                            
-                            <template #permission="props">
-                                <router-link :to="{name: 'role-permission',params:{id: props.row.id}}" class="btn me-2 btn-success">
-                                    <SvgIcon icon="edit"></SvgIcon>
-                                    Permissions
-                                </router-link>
                             </template>
-<!--                            <template #service="props">
-                                <a href="javascript:" class="btn me-2 btn-success" @click="getService(props.row)">
-                                    <SvgIcon icon="edit"></SvgIcon>
-                                    Services
-                                </a>
-                            </template>-->
-                        </v-client-table>
+                        </v-server-table>
                     </div>
                 </div>
             </div>
             <!--Add Role Modal-->
-            <div id="addRoleModal" class="modal fade" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div id="addPermissionModal" class="modal fade" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-md modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">{{ params.id ? 'Update Role' : 'Add New Role' }}</h5>
-                            <button type="button" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close" class="btn-close"></button>
+                            <h5 class="modal-title">{{ params.id ? 'Update Permission' : 'Add New Permission' }}</h5>
+<!--                            <button type="button" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close" class="btn-close"></button>-->
                         </div>
                         <div class="modal-body">
                             <div class="compose-box">
@@ -83,45 +70,56 @@
                                     <form>
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <TInput
-                                                        id="name"
-                                                        label="Role Name"
-                                                        placeholder="Role Name *"
-                                                        ref="role_name"
-                                                        label-id="role_name"
-                                                        type="text"
-                                                        :required-field="true"
-                                                        v-model="params.name"
-                                                        :is-submit-form="is_submit_form"
-                                                    />                                                    
-                                                </div>
+                                                <TInput
+                                                    id="name"
+                                                    label="Permission Name"
+                                                    placeholder="Permission Name *"
+                                                    ref="name"
+                                                    label-id="permission-name"
+                                                    type="text"
+                                                    :required-field="true"
+                                                    v-model="params.name"
+                                                    :is-submit-form="is_submit_form"
+                                                />                                                    
                                             </div>
                                             <!-- Status -->
                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <BaseSelect
-                                                        id="role_status"
-                                                        label="Status"
-                                                        :required-field="false"
-                                                        v-model="params.role_status"
-                                                        :options="activeOptions"
-                                                    />
-                                                </div>
+                                                <BaseSelect
+                                                    id="role_status"
+                                                    label="Status"
+                                                    :required-field="false"
+                                                    v-model="params.permission_status"
+                                                    :options="activeOptions"
+                                                />
                                             </div>
                                             <!--/ Status -->
                                         </div>
                                         <div class="row">
-                                            <div class="col-sm-12">
+                                            <div class="col-md-12">
                                                 <div class="form-group">
                                                     <TInput
-                                                        id="role_remark"
+                                                        id="display_name"
+                                                        label="Display Name"
+                                                        placeholder="Display Name *"
+                                                        type="text"
+                                                        :required-field="true"
+                                                        v-model="params.permission_display_name"
+                                                        :is-submit-form="is_submit_form"
+                                                    />                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <TInput
+                                                        id="permission_remark"
                                                         label="Remarks"
                                                         placeholder="Remarks"
                                                         type="text"
                                                         :required-field="false"
-                                                        v-model="params.role_remark"
-                                                    />                                                    
+                                                        v-model="params.permission_remark"
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
@@ -157,7 +155,7 @@
 </template>
 
 <script setup>
-import {computed, onMounted, ref} from 'vue';
+    import {computed, onMounted, ref} from 'vue';
     import feather from 'feather-icons';
     import useShowMessage from "@/composables/useShowMessage";
     import useExportTable from "@/composables/useExportTable";
@@ -168,9 +166,10 @@ import {computed, onMounted, ref} from 'vue';
     import DeleteModal from '@/components/form/DeleteModal.vue';
     import { useStore } from 'vuex';
     import Loader from '@/views/backend/loader/default-loader';
+    import axiosClient from "@/axios";
 
     /* Set page title */
-    useMeta({ title: 'Roles' });
+    useMeta({ title: 'Permissions' });
     
     /* variable declaration */
     const { validation } = useValidation();
@@ -178,23 +177,25 @@ import {computed, onMounted, ref} from 'vue';
     const { exportTable } = useExportTable();
     const store = useStore();
     const is_submit_form = ref(false);
+    let addPermissionModal = ref(null);
+    const table = ref(null);
     const pin = ref(null);
-    let addRoleModal = ref(null);
     let deleteModal = ref(null);
-    const validateData = ref({ name:''});
+    const validateData = ref({ name:'',permission_display_name:''});
     const params = ref({
         name: '',
         id:null,
         guard_name: 'web',
-        role_status:'ACTIVE',
-        role_remark:'',
+        permission_status:'ACTIVE',
+        permission_display_name:'',
+        permission_remark:'',
     });
     const deleteParams = ref({
-        role_id: null,
+        permission_id: null,
         pin: '',
     });
     const activeOptions = ref(store.state.constant.activeStatus);
-    const columns = ref(['id', 'name', 'permission','role_status','role_remark', 'actions']);
+    const columns = ref(['id', 'name', 'permission_display_name','permission_status','permission_remark', 'actions']);
     const items = ref([]);
 
     /* Set Data table option */
@@ -202,46 +203,77 @@ import {computed, onMounted, ref} from 'vue';
         perPage: 10,
         perPageValues: [5, 10, 20, 50],
         skin: 'table table-hover',
-        columnsClasses: { action: 'actions text-center' },
-        pagination: { nav: 'scroll', chunk: 5 },
+        columnsClasses: { actions: 'actions text-center' },
+        pagination: { nav: 'scroll', chunk: 3,edge: true,dropdown: false },
+        debounce: 500,
+        filterByColumn:false,
+        filterable:true,
+        orderBy:{column:'name',ascending:true},
         texts: {
             count: 'Showing {from} to {to} of {count}',
             filter: '',
             filterPlaceholder: 'Search...',
             limit: 'Results:',
+            loadingError: 'Oops! Something went wrong',
         },
-        sortable: ['id', 'name'],
+        sortable: ['id', 'name', 'permission_display_name','permission_status'],
         sortIcon: {
             base: 'sort-icon-none',
             up: 'sort-icon-asc',
             down: 'sort-icon-desc',
         },
-        resizableColumns: false,
+        requestFunction(data) {
+            return axiosClient.get('/permissions', {
+                params: data
+            }).catch(function (e) {
+                this.dispatch('error',e);
+            })
+        },
+        requestAdapter(data) {
+            return {
+                search_text: data.query,
+                display_item_per_page: data.limit,
+                page: data.page,
+                orderBy: data.orderBy,
+                ascending: data.ascending,
+                byColumn: data.byColumn,
+            }
+        },
+        responseAdapter({data}) {
+            //console.log(data.data.countries);
+            items.value = data.data.permissions;
+            return {
+                data: data.data.permissions,
+                count: data.data.total,
+            }
+        },
     });
 
     /* set loader to state */
-    const loading = computed(() => store.state.role.roles.loading);
-    const loadingSubmitted = computed(() =>  store.state.role.buttonLoading.loading);    
+    //const loading = computed(() => store.state.permission.permissions.loading);
+    const loadingSubmitted = computed(() =>  store.state.permission.buttonLoading.loading);    
 
     /* Mounted hook */
     onMounted(() => {
-        getRoleData();
+        //getPermissionData();
         feather.replace();
+        initPopup();
+        initDeletePopup();
     });
     
     /* get role data */
-    function getRoleData() {
-        store.dispatch('role/getRoles').then(() => {
+    /*function getPermissionData() {
+        store.dispatch('permission/getPermissions').then(() => {
             //console.log(store.state.role.roles.data.roles);
-            items.value = store.state.role.roles.data.roles;
+            items.value = store.state.permission.permissions.data.permissions;
             initPopup();
             initDeletePopup();
         });
-    };
+    }*/
 
     /* Add Role Modal init */
     const initPopup = () => {
-        addRoleModal = new window.bootstrap.Modal(document.getElementById('addRoleModal'));
+        addPermissionModal = new window.bootstrap.Modal(document.getElementById('addPermissionModal'));
     };
     /* Delete Modal init */
     const initDeletePopup = () => {
@@ -254,36 +286,37 @@ import {computed, onMounted, ref} from 'vue';
             reset_form();
             params.value = JSON.parse(JSON.stringify(role));
         }
-        addRoleModal.show();
+        addPermissionModal.show();
     };
     
     /* Save and update state */
     function handle_save(){
         is_submit_form.value = true;
         validateData.value.name = params.value.name;
+        validateData.value.permission_display_name = params.value.permission_display_name;
         if (validation(validateData)) {
-            let dispatchUral = 'role/saveRole';
+            let dispatchUral = 'permission/savePermission';
             if(params.value.id){
-                dispatchUral = 'role/updateRole';
+                dispatchUral = 'permission/updatePermission';
             }
             store.dispatch(dispatchUral,{...params.value}).then(({data}) => {
-                store.commit('role/setButtonLoading', false);
+                store.commit('permission/setButtonLoading', false);
                 if(data.data.status === true){
-                    const currentData = store.state.role.role.data;
+                    const currentData = store.state.permission.permission.data;
                     if(params.value.id){
-                        items.value[items.value.findIndex((d) => d.id === params.value.id)] = currentData;
+                        table.value.data[table.value.data.findIndex((d) => d.id === params.value.id)] = currentData;
                     }else {
-                        items.value.splice(0,0,currentData);
+                        table.value.data.splice(0,0,currentData);
                     }
                     showAlert(data.message,'success');// type => success/error
                     reset_form();
-                    addRoleModal.hide();
+                    addPermissionModal.hide();
                 }else{
                     showMessage(data.message,'error');// type => success/error
                 }             
                 
             }).catch((err) => {
-                store.commit('role/setButtonLoading', false);
+                store.commit('permission/setButtonLoading', false);
                 //error.value = `${err.data.message}`;
                 showMessage('Something went really wrong!','error');// type => success/error
             });
@@ -295,17 +328,17 @@ import {computed, onMounted, ref} from 'vue';
     /* Delete role */
     function handle_delete(id) {
         reset_delete_form();
-        deleteParams.value.role_id = id;
+        deleteParams.value.permission_id = id;
         deleteModal.show();
     }
     
     function delete_submit(){
         if(deleteParams.value.pin){
-            store.dispatch("role/deleteRole",{...deleteParams.value}).then(({data}) => {
+            store.dispatch("permission/deletePermission",{...deleteParams.value}).then(({data}) => {
                 //console.log(data.data.status);
-                store.commit('role/setButtonLoading', false);
+                store.commit('permission/setButtonLoading', false);
                 if(data.data.status === true){
-                    items.value = items.value.filter((d) => d.id !== deleteParams.value.role_id);
+                    table.value.data.splice(table.value.data.findIndex((d) => d.id === deleteParams.value.permission_id),1);
                     showAlert(data.message,'success');// type => success/error
                     reset_delete_form();
                     deleteModal.hide();
@@ -314,7 +347,7 @@ import {computed, onMounted, ref} from 'vue';
                 }
 
             }).catch((err) => {
-                store.commit('role/setButtonLoading', false);
+                store.commit('permission/setButtonLoading', false);
                 showMessage('Something went really wrong!','error');// type => success/error
             });
         }else {
@@ -323,35 +356,31 @@ import {computed, onMounted, ref} from 'vue';
             
     }
 
-    /* Add or Edit Permission */
-    const getPermission = (id) => {
-        
-    }
-
     /* Reset all reactive/ref filed after successful insert */
     const reset_form = () => {
-        params.value = {id:null,name:'',guard_name: 'web',role_remark:'',role_status:'ACTIVE'};
+        params.value = {id:null,name:'',guard_name: 'web',permission_remark:'',permission_status:'ACTIVE'};
         is_submit_form.value = false;
     };
 
-    /* Reset all reactive/ref filed after successful insert */
+    /* Reset all reactive/ref filed */
     const reset_delete_form = () => {
-        deleteParams.value.role_id = null;
+        deleteParams.value.permission_id = null;
         deleteParams.value.pin = '';
     };
 
     /* Export table function */
     const export_table = (type) => {
-        let cols = columns.value.filter((d) => d != 'permission' && d != 'actions');
-        exportTable(type,items.value,cols,'Roles');    
+        let cols = columns.value.filter((d) => d != 'actions');
+        exportTable(type,items.value,cols,'Permissions');    
     };
 
     /* define excel column */
     const excel_columns = () => {
         return {
-            'Role ID': 'id',
-            'Role Name': 'name',        
-            'Role Remark': 'role_remark',        
+            'Permission ID': 'id',
+            'Permission Name': 'name',        
+            'Display Name': 'permission_display_name',        
+            'Permission Remark': 'permission_remark',        
         };
     };
     const excel_items = () => {

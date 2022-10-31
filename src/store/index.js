@@ -5,10 +5,13 @@ import axiosClient from '../axios'
 import login from './modules/login/login';
 import loginHistory from './modules/login_history/login-history';
 import country from './modules/utility_settings/country/country';
-import province from './modules/utility_settings/province/province';
+import state from './modules/utility_settings/state/state';
 import city from './modules/utility_settings/city/city';
 import bank from './modules/utility_settings/bank/bank';
 import branch from './modules/utility_settings/bank/branch';
+import role from './modules/role/role';
+import permission from './modules/permission/permission';
+import constant from './modules/utility_settings/constant/constant';
 
 export default new createStore({
     state: {        
@@ -111,9 +114,12 @@ export default new createStore({
         login,
         loginHistory,
         country,
-        province,
+        state,
         city,
         bank,
         branch,
+        role,
+        permission,
+        constant,
     },
 });

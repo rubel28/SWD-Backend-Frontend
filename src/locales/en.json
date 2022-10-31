@@ -7,11 +7,13 @@
     "utility-settings": "Utility Settings",
     "country": "Country",
     "province": "Province",
+    "state": "State",
     "city": "City",
     "bank": "Bank",
     "branch": "Branch",
     "sales": "Sales",    
     "more": "More",
     "role_manage": "Role Manage",
-    "all_roles": "All Roles"
+    "all_roles": "Roles",
+    "permissions": "Permissions"
 }

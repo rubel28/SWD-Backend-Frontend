@@ -10,7 +10,7 @@
                                     <i data-feather="home"></i>                                    
                                 </a>
                             </li>
-                            <li class="breadcrumb-item"><a href="javascript:;">Utility Settings</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Utility Settings</a></li>
                             <li class="breadcrumb-item active" aria-current="page"><span>Country</span></li>
                         </ol>
                     </nav>
@@ -30,16 +30,16 @@
                     <div class="custom-table panel-body p-0">
                         <div class="d-flex flex-wrap justify-content-between px-3 pt-3 pb-0">
                             <div>
-                                <a id="addCountry" href="javascript:;" @click="handle_edit()" class="btn me-2 btn-primary">
+                                <a id="addCountry" href="javascript:" @click="handle_edit(null)" class="btn me-2 btn-primary">
                                     <i data-feather="plus"></i>
                                     Add New
                                 </a>
                             </div>
                             <div>
-                                <button variant="primary" class="btn m-1 btn-primary" @click="export_table('csv')">CSV</button>
+                                <button class="btn m-1 btn-primary" @click="export_table('csv')">CSV</button>
                                 <vue3-json-excel class="btn btn-primary m-1" name="country.xls" :fields="excel_columns()" :json-data="excel_items()">Excel</vue3-json-excel>
-                                <button variant="primary" class="btn m-1 btn-primary" @click="export_table('print')">Print</button>
-                                <button variant="primary" class="btn m-1 btn-primary" @click="export_table('pdf')">PDF</button>
+                                <button class="btn m-1 btn-primary" @click="export_table('print')">Print</button>
+                                <button class="btn m-1 btn-primary" @click="export_table('pdf')">PDF</button>
                             </div>
                         </div>
                         
@@ -47,6 +47,9 @@
                         <v-server-table ref="table" :columns="columns" :options="table_option">
 
                             <template #actions="props">
+                                <a href="javascript:void(0);" @click="handle_edit(props.row)" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
+                                    <SvgIcon icon="eye"></SvgIcon>
+                                </a>
                                 <a href="javascript:void(0);" @click="handle_edit(props.row)" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
                                     <SvgIcon icon="edit-2"></SvgIcon>
                                 </a>
@@ -56,28 +59,28 @@
                             </template>
                             <template #country_name="props">
                                 <div class="d-flex">
-                                    <div class="usr-img-frame me-2 rounded-circle">
+<!--                                    <div class="usr-img-frame me-2 rounded-circle">
                                         <img :src="`${props.row.country_logo_path}`" class="img-fluid rounded-circle" alt="avatar" />
-                                    </div>
-                                    <p class="align-self-center mb-0 admin-name">{{ props.row.country_name }}</p>
+                                    </div>-->
+                                    <p class="align-self-center mb-0 admin-name">{{ `${props.row.country_emoji} ${props.row.country_name}` }}</p>
                                 </div>
                             </template>
                             <template #id="props">{{ props.row.id }}</template>
-                            <template #country_iso="props">{{ props.row.country_iso }}</template>
+                            <template #country_currency="props">{{ props.row.country_currency }}</template>
+                            <template #country_iso2="props">{{ props.row.country_iso2 }}</template>
                             <template #country_iso3="props">{{ props.row.country_iso3 }}</template>
                             <template #country_phone_code="props">{{ props.row.country_phone_code }}</template>
-                            <template #active_status="props">{{ props.row.active_status }}</template>
+                            <template #active_status="props">{{ props.row.country_status }}</template>
                         </v-server-table>
                     </div>
                 </div>                
             </div>
-            <!--Modal-->
+            <!-- Add Country Modal -->
             <div id="addCountryModal" class="modal fade" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">{{ params.id ? 'Update Country' : 'Add New Country' }}</h5>
-                            <button type="button" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close" class="btn-close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="compose-box">
@@ -88,7 +91,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-12 country-logo">
                                                         <div class="upload pe-md-6">
-                                                            <input ref="fl_profile" type="file" class="d-none" accept="image/*" @change="change_file" />
+                                                            <input disabled ref="fl_profile" type="file" class="d-none" accept="image/*" @change="change_file" />
                                                             <img
                                                                 v-if="params.country_logo_path"
                                                                 :src="params.country_logo_path"
@@ -109,71 +112,73 @@
                                             <div class="col-xl-10 col-lg-12 col-md-8 mt-md-0 mt-4">
                                                 <div class="row">
                                                     <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="name"><strong>Country Name</strong></label>
-                                                            <input v-model="params.country_name"
-                                                                   id="name" type="text"
-                                                                   name="country_name"
-                                                                   class="form-control"
-                                                                   placeholder="Country Name *"
-                                                                   ref="country_name"
-                                                                   :class="[is_submit_form ? (params.country_name ? 'is-valid' : 'is-invalid') : '']"
-                                                            />
-                                                            <div class="valid-feedback">Looks good!</div>
-                                                            <div class="invalid-feedback">Please fill the Country Name</div>
-                                                        </div>
+                                                        <TInput
+                                                            id="name"
+                                                            label="Country Name"
+                                                            placeholder="Country Name *"
+                                                            ref="country_name"
+                                                            label-id="country-name"
+                                                            type="text"
+                                                            :maxlength="255"
+                                                            :required-field="true"
+                                                            v-model="params.country_name"
+                                                            :is-submit-form="is_submit_form"
+                                                        />
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="iso">ISO</label>
-                                                            <input v-model="params.country_iso"
-                                                                   id="iso" type="text"
-                                                                   name="country_iso"
-                                                                   class="form-control"
-                                                                   placeholder="Country ISO *"
-                                                            />
-                                                        </div>
+                                                        <TInput
+                                                            id="iso"
+                                                            label="ISO2"
+                                                            placeholder="ISO2"
+                                                            type="text"
+                                                            :maxlength="2"
+                                                            :required-field="false"
+                                                            v-model="params.country_iso2"
+                                                        />
                                                     </div>                                                    
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="iso3">ISO3</label>
-                                                            <input v-model="params.country_iso3"
-                                                                   id="iso3" type="text"
-                                                                   class="form-control"
-                                                                   name="country_iso3"
-                                                                   placeholder="Country ISO3"
-                                                            />
-                                                        </div>
+                                                        <TInput
+                                                            id="iso3"
+                                                            label="ISO3"
+                                                            placeholder="ISO3"
+                                                            type="text"
+                                                            :maxlength="3"
+                                                            :required-field="false"
+                                                            v-model="params.country_iso3"
+                                                        />
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="country_code">Country Code</label>
-                                                            <input v-model="params.country_phone_code"
-                                                                   id="country_code" type="text"
-                                                                   class="form-control"
-                                                                   name="country_phone_code"
-                                                                   placeholder="Country Phone Code"
-                                                            />
-                                                        </div>
+                                                        <TInput
+                                                            id="country_code"
+                                                            label="Country Code"
+                                                            placeholder="Country Code"
+                                                            type="text"
+                                                            :required-field="false"
+                                                            v-model="params.country_phone_code"
+                                                        />
                                                     </div>                                                   
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <label for="country_status">Active Status</label>
-                                                            <div id="country_status" class="col-lg-3 col-md-3 col-sm-4 col-6">
-                                                                <label class="switch s-outline s-outline-success mb-4 me-2">
-                                                                    <input
-                                                                        v-model="params.country_status"
-                                                                        type="checkbox"
-                                                                        name="country_status"
-                                                                    />
-                                                                    <span class="slider round"></span>
-                                                                </label>
-                                                            </div>
-                                                        </div>
+                                                        <TInput
+                                                            id="currency"
+                                                            label="Country Currency"
+                                                            placeholder="Country Currency"
+                                                            type="text"
+                                                            :required-field="false"
+                                                            v-model="params.country_currency"
+                                                        />
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <BaseSelect
+                                                            id="status"
+                                                            label="Status"
+                                                            :required-field="false"
+                                                            v-model="params.country_status"
+                                                            :options="activeOptions"
+                                                        />                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -193,18 +198,33 @@
                     </div>
                 </div>
             </div>
+            <!--/ Add Country Modal-->
+
+            <!--Delete Modal-->
+            <DeleteModal
+                modal-id="deleteModal"
+                :delete-params="deleteParams"
+                :loading-submitted="loadingSubmitted"
+                ref="pin"
+                @deleteSubmit="delete_submit()"
+                @resetForm="reset_delete_form()"
+            />
+            <!--/ Delete Modal-->
         </div>
     </div>
 </template>
 
 <script setup>
-    import {computed, onMounted, ref, watch, watchEffect} from 'vue';
+    import {computed, onMounted, ref} from 'vue';
     import '@/assets/sass/components/custom-sweetalert.scss';
     import '@/assets/sass/country/country.scss';
-    import Loader from '@/views/backend/loader/default-loader';
+    //import Loader from '@/views/backend/loader/default-loader';
     import useValidation from "@/composables/useValidation";
     import useShowMessage from "@/composables/useShowMessage";    
-    import useExportTable from "@/composables/useExportTable";    
+    import useExportTable from "@/composables/useExportTable";
+    import TInput from '@/components/form/core/BaseInput.vue';
+    import BaseSelect from '@/components/form/core/BaseSelect.vue';
+    import DeleteModal from '@/components/form/DeleteModal.vue';
     import { useStore } from 'vuex';
     import { useMeta } from '@/composables/use-meta';
     import axiosClient from "@/axios";
@@ -215,26 +235,41 @@
     
     /* variable declaration */
     const { validation,is_submit_form } = useValidation();
-    const { showMessage } = useShowMessage();
+    const { showMessage,showAlert } = useShowMessage();
     const { exportTable } = useExportTable();
     const store = useStore();
     const error = ref(null);
     let addCountryModal = ref(null);
+    let deleteModal = ref(null);
+    const pin = ref(null);
+    const activeOptions = ref(store.state.constant.activeStatus);
     const params = ref({
-        country_iso: '',
+        country_iso2: '',
         country_name: '',
         country_iso3: '',
         country_phone_code:'',
-        image: '',
-        country_status: true,
-        country_logo_path: '',
+        //image: '',
+        //country_logo_path: '',
+        country_status: 'ACTIVE',
         id:null,
+        country_currency:'',
+        country_currency_symbol:'None',
+        country_latitude:'24.00000000',
+        country_longitude:'90.00000000',
+        country_emoji:'🇧🇩',
+        country_emojiU:'U+1F1E7 U+1F1E9',
+        country_flag:1,
+        country_logo:'None',
+    });
+    const deleteParams = ref({
+        country_id: null,
+        pin: '',
     });
     //const country_name = ref(null);
-    const table = ref(null)
-    const selected_file = ref(null);
+    const table = ref(null);
+    //const selected_file = ref(null);
     const validateData = ref({ country_name:'' });
-    const columns = ref(['id', 'country_name', 'country_iso','country_iso3', 'country_phone_code', 'active_status', 'actions']);
+    const columns = ref(['id', 'country_name', 'country_currency','country_iso2','country_iso3', 'country_phone_code', 'country_status', 'actions']);
     const items = ref([]);
 
     /* Set Data table option */
@@ -255,7 +290,7 @@
             limit: 'Results:',
             loadingError: 'Oops! Something went wrong',
         },
-        sortable: ['id', 'country_name', 'country_iso', 'country_iso3', 'country_phone_code','active_status'],
+        sortable: ['id', 'country_name', 'country_currency','country_iso2', 'country_iso3', 'country_phone_code','active_status'],
         sortIcon: {
             base: 'sort-icon-none',
             up: 'sort-icon-asc',
@@ -270,21 +305,20 @@
         },
         requestAdapter(data) {
             return {
-                sort: data.orderBy ? data.orderBy : 'country_name',
-                direction: data.ascending ? 'asc' : 'desc',
-                query: data.query,
-                byColumn: data.byColumn,
-                limit: data.limit,
+                search_text: data.query,
+                display_item_per_page: data.limit,
                 page: data.page,
                 orderBy: data.orderBy,
                 ascending: data.ascending,
+                byColumn: data.byColumn,
             }
         },
         responseAdapter({data}) {
-            items.value = data.data;
+            //console.log(data.data.countries);
+            items.value = data.data.countries;
             return {
-                data: data.data,
-                count: data.count,
+                data: data.data.countries,
+                count: data.data.total,
             }
         },
     });
@@ -293,29 +327,32 @@
     //const loading = computed(() => store.state.country.countries.loading);
     const loadingSubmitted = computed(() =>  store.state.country.buttonLoading.loading);
 
-    // get data for custom validation
-    watchEffect(() => {
-        validateData.value.country_name = params.value.country_name;
-    })
+    
     /* Mounted hook */
     onMounted(() => {
         feather.replace();
         initPopup();
+        initDeletePopup();
         //getCountryData();
     })
     
     /* get country data */
-    function getCountryData() {        
+    /*function getCountryData() {        
         store.dispatch('country/getCountries').then(() => {
             items.value = store.state.country.countries.data;
             initPopup();
         });
-    };
+    }*/
 
     /* Modal init */
     const initPopup = () => {
         addCountryModal = new window.bootstrap.Modal(document.getElementById('addCountryModal'));
-    };   
+    };
+
+    /* Delete Modal init */
+    const initDeletePopup = () => {
+        deleteModal = new window.bootstrap.Modal(document.getElementById('deleteModal'));
+    };
 
     // get image file and imageUrl on upload
     const change_file = (ev) => {
@@ -334,75 +371,114 @@
     /* open modal in add and edit mode */
     const handle_edit = (country) => {
         reset_form();
-        if (country) {
-            params.value = JSON.parse(JSON.stringify(country));
+        if (country) {            
+            //params.value = JSON.parse(JSON.stringify(country));
+            params.value.country_name = country.country_name;
+            params.value.country_status = country.country_status;
+            params.value.country_phone_code = country.country_phone_code;
+            params.value.country_iso2 = country.country_iso2;
+            params.value.country_iso3 = country.country_iso3;
+            params.value.country_currency = country.country_currency;
+            params.value.id = country.id;
+            params.value.country_currency_symbol = country.country_currency_symbol;
+            params.value.country_latitude = country.country_latitude;
+            params.value.country_longitude = country.country_longitude;
+            params.value.country_emoji = country.country_emoji;
+            params.value.country_emojiU = country.country_emojiU;
+            params.value.country_flag = country.country_flag;
         }
         addCountryModal.show();
     };
     /* Save and update country */
     function handle_save(){
         is_submit_form.value = true;
+        validateData.value.country_name = params.value.country_name;
         if (validation(validateData)) {
-            let dispatchUral = '';
+            let dispatchUral = 'country/saveCountry';
             if(params.value.id){
                 dispatchUral = 'country/updateCountry';
-            }else{
-                dispatchUral = 'country/saveCountry';                
             }
             store.dispatch(dispatchUral,{...params.value}).then(({data}) => {
                 //console.log(data.data);
                 store.commit('country/setButtonLoading', false);
-                const currentData = store.state.country.country.data;
-                if(params.value.id){
-                    table.value.data[table.value.data.findIndex((d) => d.id === params.value.id)] = currentData;
-                }else {
-                    table.value.data.splice(0,0,currentData);
+                if(data.data.status === true){
+                    const currentData = store.state.country.country.data;
+                    if(params.value.id){
+                        table.value.data[table.value.data.findIndex((d) => d.id === params.value.id)] = currentData;
+                    }else {
+                        table.value.data.splice(0,0,currentData);
+                    }
+                    showAlert(data.message,'success');// type => success/error
+                    reset_form();
+                    addCountryModal.hide();
+                }else{
+                    showMessage(data.message,'error');// type => success/error
                 }
-                showMessage(data.message,'success');// type => success/error
-                addCountryModal.hide();
             }).catch((err) => {
+                console.log(err);
                 store.commit('country/setButtonLoading', false);
+                showMessage('Something went really wrong!','error');// type => success/error
                 //error.value = `${err.data.message}! ${err.data.data.error}`;
             });
         }else {
-            showMessage('Field Validation Error!','error');// type => success/error
+            //showMessage('Field Validation Error!','error');// type => success/error
         }
     }
 
     /* Delete country */
     function handle_delete(id) {
-        new window.Swal({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            showCancelButton: true,
-            confirmButtonText: 'Delete',
-            padding: '2em'
-        }).then(result => {
-            if (result.value) {
-                store.dispatch("country/deleteCountry", id).then(() => {
-                    table.value.data.splice(table.value.data.findIndex((d) => d.id === id),1);
-                });
-                showMessage('Country has been deleted.','success');// type => success/error
-            }
-        });
+        reset_delete_form();
+        deleteParams.value.country_id = id;
+        deleteModal.show();
     }
+
+    function delete_submit(){
+        if(deleteParams.value.pin){
+            store.dispatch("country/deleteCountry",{...deleteParams.value}).then(({data}) => {
+                //console.log(data.data.status);
+                store.commit('country/setButtonLoading', false);
+                if(data.data.status === true){
+                    table.value.data.splice(table.value.data.findIndex((d) => d.id === deleteParams.value.country_id),1);
+                    showAlert(data.message,'success');// type => success/error
+                    reset_delete_form();
+                    deleteModal.hide();
+                }else{
+                    showMessage(data.message,'error');// type => success/error
+                }
+
+            }).catch((err) => {
+                store.commit('country/setButtonLoading', false);
+                showMessage('Something went really wrong!','error');// type => success/error
+            });
+        }else {
+            eval(pin).value?.focus();
+        }
+
+    }    
 
     /* Reset all reactive/ref filed after successful insert */
     const reset_form = () => {
         params.value.id = null;
         params.value.country_name =  '';
-        params.value.country_iso = '';
+        params.value.country_iso2 = '';
         params.value.country_iso3 = '';
         params.value.country_phone_code = '';
-        params.value.country_logo_path = '';
-        params.value.country_status = true;
+        //params.value.country_logo_path = '';
+        params.value.country_currency = '';
+        params.value.country_status = "ACTIVE";
         is_submit_form.value = false;
         //country_name.value.focus();
+    };
+
+    /* Reset all reactive/ref filed */
+    const reset_delete_form = () => {
+        deleteParams.value.country_id = null;
+        deleteParams.value.pin = '';
     };
     
     /* Export table function */
     const export_table = (type) => {
-        let cols = columns.value.filter((d) => d != 'actions');
+        let cols = columns.value.filter((d) => d !== 'actions');
         exportTable(type,items.value,cols,'Country');
     }
     /* define excel column */
@@ -410,10 +486,11 @@
         return {
             'ID': 'id',
             'Name': 'country_name',
-            'ISO': 'country_iso',
-            'ISO3 No': 'country_iso3',
+            'Currency': 'country_currency',
+            'ISO2': 'country_iso2',
+            'ISO3': 'country_iso3',
             'Phone Code': 'country_phone_code',
-            Status: 'active_status',
+            Status: 'country_status',
         };
     };
     const excel_items = () => {

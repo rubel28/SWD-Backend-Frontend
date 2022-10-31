@@ -14,13 +14,6 @@ export default {
         buttonLoading: {
             loading: false,
         },
-        country:{
-            loading: false,
-            data: []
-        },
-        provinces:{
-            data: []
-        },
     },
     getters: {
 
@@ -40,12 +33,6 @@ export default {
         },
         setButtonLoading: (state, loading) => {
             state.buttonLoading.loading = loading;
-        },
-        setCountries: (state, country) => {
-            state.country.data = country;
-        },
-        setProvinces: (state, provinces) => {
-            state.provinces.data = provinces;
         },
     },
     actions: {
@@ -71,47 +58,36 @@ export default {
                 })
         },
         saveCity({ commit }, city) {
+            delete city.id;
             commit('setButtonLoading',true)
-            return axiosClient.post("/cities", city).then((res) => {
-                    commit('setCity', res.data.data)
-                    return res;
-                });
-        },
-        updateCity({ commit }, city) {            
-            commit('setButtonLoading',true)
-            let response = axiosClient.put(`/cities/${city.id}`, city).then((res) => {
-                    commit('setCity', res.data.data)
-                    return res;
-                });
-
-            return response;
-        },
-        deleteCity({ dispatch }, id) {
-            return axiosClient.delete(`/cities/${id}`).then((res) => {
+            let response = axiosClient.post("/cities", city).then((res) => {
+                if(res.data.data.status === true){
+                    commit('setCity', res.data.data.cities);
+                }
                 return res;
             });
+            return response;
         },
-        getCountries({commit}){
-            return axiosClient.get('/select-box-countries')
-                .then((res) => {
-                    //console.log(res.data.data)
-                    commit('setCountries', res.data.data);
-                    return res;
-                })
-                .catch((err) => {
-                    throw err;
-                });
+        updateCity({ commit }, city) {
+            commit('setButtonLoading',true)
+            let response = axiosClient.put(`/cities/${city.id}`, city).then((res) => {
+                if(res.data.data.status === true){
+                    commit('setCity', res.data.data.cities);
+                }
+                return res;
+            });
+
+            return response;            
         },
-        getProvinces({commit}, id){
-            return axiosClient.get(`/provinces-by-country/${id}`)
-                .then((res) => {
-                    //console.log(res.data.data)
-                    commit('setProvinces', res.data.data);
-                    return res;
-                })
-                .catch((err) => {
-                    throw err;
-                });
+        deleteCity({ commit }, param) {
+            param.login = localStorage.getItem('loginId');
+            commit('setButtonLoading',true);
+            return axiosClient.post("/cities/city-destroy",param).then((res) => {
+                return res;
+            }).catch((err) => {
+                commit("setButtonLoading", false);
+                throw err;
+            });
         },
     }
 }

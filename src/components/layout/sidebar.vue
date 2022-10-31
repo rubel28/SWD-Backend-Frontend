@@ -34,6 +34,11 @@
                                 {{$t('all_roles')}}
                             </router-link>
                         </li>
+                        <li>
+                            <router-link to="/permissions" @click="toggleMobileMenu">
+                                {{$t('permissions')}}
+                            </router-link>
+                        </li>
                     </ul>
                 </li>
                 <!-- End -->
@@ -82,8 +87,8 @@
                             </router-link>
                         </li>
                         <li>
-                            <router-link to="/province" @click="toggleMobileMenu">
-                                {{$t('province')}}
+                            <router-link to="/state" @click="toggleMobileMenu">
+                                {{$t('state')}}
                             </router-link>
                         </li>
                         <li>

@@ -6,7 +6,7 @@ import store from './store';
 import router from './router';
 
 const axiosClient = axios.create({
-    baseURL: `${process.env.VUE_APP_SWD_API_BASE_URL}/api`,
+    baseURL: `${process.env.VUE_APP_SWD_API_BASE_URL}/api/v1`,
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -41,16 +41,20 @@ axiosClient.interceptors.response.use(response => {
             case 401:
                 //console.log('error')
                 store.state.login.user.token = null;
-                localStorage.removeItem('TOKEN')
-                router.push({name:'Login'})
+                localStorage.removeItem('TOKEN');
+                localStorage.removeItem('userData');
+                localStorage.removeItem('loginId');
+                router.push({name: 'Login'});
                 break;
             case 403:
                 store.state.login.user.token = null;
-                localStorage.removeItem('TOKEN')
-                router.push({name:'Login'})
+                localStorage.removeItem('TOKEN');
+                localStorage.removeItem('userData');
+                localStorage.removeItem('loginId');
+                router.push({name:'Login'});
                 break;
             case 404:
-                router.push({name:'notFound'})
+                router.push({name:'notFound'});
                 break;
             case 502:
             //do something

@@ -3,19 +3,18 @@ import axiosClient from "@/axios";
 export default {
     namespaced: true,
     state: {
-        countries: {
+        states: {
             loading: false,
             data: []
         },
-        country: {
+        state: {
             loading: false,
             data: {}
         },
         buttonLoading: {
             loading: false,
         },
-        allCountry:{
-            loading: false,
+        allStateByCountry: {
             data: []
         },
     },
@@ -23,14 +22,14 @@ export default {
 
     },
     mutations: {
-        setCountries: (state, countries) => {
-            state.countries.data = countries;
+        setStates: (state, states) => {
+            state.states.data = states;
         },
-        setCountry: (state, country) => {
-            state.country.data = country;
+        setState: (state, states) => {
+            state.state.data = states;
         },
-        setCountriesLoading: (state, loading) => {
-            state.countries.loading = loading;
+        setStatesLoading: (state, loading) => {
+            state.states.loading = loading;
         },
         setCountryLoading: (state, loading) => {
             state.country.loading = loading;
@@ -38,78 +37,72 @@ export default {
         setButtonLoading: (state, loading) => {
             state.buttonLoading.loading = loading;
         },
-        setAllCountries: (state, country) => {
-            state.allCountry.data = country;
+        setAllStateByCountry: (state, states) => {
+            state.allStateByCountry.data = states;
         },
     },
     actions: {
-        getCountries({commit}){
-            commit('setCountriesLoading',true);
-            return axiosClient.get('/countries')
+        getStates({commit}){
+            commit('setStatesLoading',true);
+            return axiosClient.get('/states')
                 .then((res) => {
                     //console.log(res.data.data)
-                    commit('setCountries', res.data.data);
-                    commit('setCountriesLoading',false);
+                    commit('setStates', res.data.data);
+                    commit('setStatesLoading',false);
                     return res;
                 })
                 .catch((err) => {
-                    commit("setCountriesLoading", false);
+                    commit("setStatesLoading", false);
                     throw err;
                 });
         },
-        getCountry({commit},id){
-            commit('setCountryLoading',true);
-            return axiosClient.get(`/countries/${id}`)
+        getState({commit},id){
+            return axiosClient.get(`/states/${id}`)
                 .then((res) => {
                     //console.log(res.data)
-                    commit('setCountry', res.data.data);
+                    commit('setState', res.data.data);
                     return res;
                 })
         },
-        saveCountry({ commit }, country) {
-            //console.log(country)
-            delete country.id;
+        saveState({ commit }, state) {
+            delete state.id;
             commit('setButtonLoading',true)
-            let response = axiosClient.post("/countries", country).then((res) => {
+            let response = axiosClient.post("/states", state).then((res) => {
                 if(res.data.data.status === true){
-                    commit('setCountry', res.data.data.countries);
+                    commit('setState', res.data.data.states);
                 }
                     return res;
                 });
             return response;
         },
-        updateCountry({ commit }, country) {
-            //console.log(country)
-            /*if(country.country_logo){
-                delete country.country_logo;
-            }*/
+        updateState({ commit }, state) {            
             commit('setButtonLoading',true)
-            let response = axiosClient.put(`/countries/${country.id}`, country).then((res) => {
+            let response = axiosClient.put(`/states/${state.id}`, state).then((res) => {
                 if(res.data.data.status === true){
-                    commit('setCountry', res.data.data.countries);
+                    commit('setState', res.data.data.states);
                 }
                     return res;
                 });
 
             return response;
         },
-        deleteCountry({ commit }, param) {
+        deleteState({ commit }, param) {
             param.login = localStorage.getItem('loginId');
             commit('setButtonLoading',true);
-            return axiosClient.post("/countries/country-destroy",param).then((res) => {
-                //dispatch('getCountries')
+            return axiosClient.post("/states/state-destroy",param).then((res) => {
                 return res;
             }).catch((err) => {
                 commit("setButtonLoading", false);
                 throw err;
             });
         },
-        getAllCountries({commit}){
-            return axiosClient.get('/country_list')
+        getAllSateByCountry({commit}, id){
+            //console.log(param)
+            return axiosClient.get(`/states?country_id=${id}`)
                 .then((res) => {
                     //console.log(res.data.data)
                     if(res.data.success === true){
-                        commit('setAllCountries', res.data.data.countries);
+                        commit('setAllStateByCountry', res.data.data.states);
                     }
                     return res;
                 })

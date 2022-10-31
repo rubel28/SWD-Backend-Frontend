@@ -7,18 +7,32 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <a href="javascript:">
-                                    <SvgIcon icon="feather-home"></SvgIcon>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-home"
+                                    >
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                    </svg>
                                 </a>
                             </li>
                             <li class="breadcrumb-item"><a href="javascript:;">Utility Settings</a></li>
-                            <li class="breadcrumb-item active" aria-current="page"><span>City</span></li>
+                            <li class="breadcrumb-item active" aria-current="page"><span>State</span></li>
                         </ol>
                     </nav>
                 </div>
             </li>
         </ul>
     </teleport>
-<!--    <Loader v-if="loading"></Loader>-->
+<!--    <Loader v-if="loading=false"></Loader>-->
     <div class="layout-px-spacing">
         <div class="row layout-top-spacing">
             <div v-if="error" class="alert alert-light-danger alert-dismissible border-0 mb-4" role="alert">
@@ -31,20 +45,22 @@
                         <div class="d-flex flex-wrap justify-content-between px-3 pt-3 pb-0">
                             <div>
                                 <a id="addCountry" href="javascript:;" @click="handle_edit()" class="btn me-2 btn-primary">
-                                    <SvgIcon icon="plus"></SvgIcon>
+                                    <SvgIcon icon="plus"></SvgIcon>                                    
                                     Add New
                                 </a>
                             </div>
                             <div>
                                 <button variant="primary" class="btn m-1 btn-primary" @click="export_table('csv')">CSV</button>
-                                <vue3-json-excel class="btn btn-primary m-1" name="city.xls" :fields="excel_columns()" :json-data="excel_items()">Excel</vue3-json-excel>
+                                <vue3-json-excel class="btn btn-primary m-1" name="state.xls" :fields="excel_columns()" :json-data="excel_items()">Excel</vue3-json-excel>
                                 <button variant="primary" class="btn m-1 btn-primary" @click="export_table('print')">Print</button>
                                 <button variant="primary" class="btn m-1 btn-primary" @click="export_table('pdf')">PDF</button>
                             </div>
                         </div>
                         
 
-                        <v-server-table ref="table" :columns="columns" :options="table_option">
+                        <v-server-table ref="table" :columns="columns" :options="table_option"
+                                        @loading="loading=true"
+                                        @loaded="loading=false">
 
                             <template #actions="props">
                                 <a href="javascript:void(0);" @click="handle_edit(props.row)" title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
@@ -55,20 +71,19 @@
                                 </a>
                             </template>                            
                             <template #id="props">{{ props.row.id }}</template>
-                            <template #city_name="props">{{ props.row.city_name }}</template>
-                            <template #active_status="props">{{ props.row.active_status }}</template>
-                            <template #country_name="props">{{ props.row.country_id }}</template>
-                            <template #state_name="props">{{ props.row.state_id }}</template>
+                            <template #province_name="props">{{ props.row.state_name }}</template>
+                            <template #country_name="props">{{ props.row.country_code }}</template>
+                            <template #active_status="props">{{ props.row.state_status }}</template>
                         </v-server-table>
                     </div>
                 </div>                
             </div>
-            <!-- Add City Modal-->
-            <div id="addCityModal" class="modal fade" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!-- State Add Modal-->
+            <div id="addStateModal" class="modal fade" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">{{ params.id ? 'Update City' : 'Add New City' }}</h5>
+                            <h5 class="modal-title">{{ params.id ? 'Update State' : 'Add New State' }}</h5>
 <!--                            <button type="button" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close" class="btn-close"></button>-->
                         </div>
                         <div class="modal-body">
@@ -76,88 +91,74 @@
                                 <div class="compose-content">
                                     <form>
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <TInput
                                                     id="name"
-                                                    label="City Name"
-                                                    placeholder="City Name *"
-                                                    ref="city_name"
-                                                    label-id="city_name"
+                                                    label="State Name"
+                                                    placeholder="State Name *"
+                                                    ref="state_name"
+                                                    label-id="state_name"
                                                     type="text"
                                                     :maxlength="255"
                                                     :required-field="true"
-                                                    v-model="params.city_name"
+                                                    v-model="params.state_name"
+                                                    :is-submit-form="is_submit_form"
+                                                />                                                
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <TInput
+                                                    id="state-latitude"
+                                                    label="State latitude"
+                                                    placeholder="State latitude *"
+                                                    ref="state_latitude"
+                                                    label-id="state_latitude"
+                                                    type="text"
+                                                    :maxlength="255"
+                                                    :required-field="true"
+                                                    v-model="params.state_latitude"
                                                     :is-submit-form="is_submit_form"
                                                 />
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="country-name">Country</label>
-                                                    <select v-model="params.country_id" class="form-select" id="country-name" @change="change_handle()"
-                                                            :class="[is_submit_form ? (params.country_id ? 'is-valid' : 'is-invalid') : '']">
-                                                        <option value="" disabled>Select Country</option>
-                                                        <option v-for="(name, value) in options" :key="value" :value="value">
-                                                            {{name}}
-                                                        </option>
-                                                    </select>
-                                                    <div class="valid-feedback">Looks good!</div>
-                                                    <div class="invalid-feedback">Please Select Country</div>
-                                                </div>
-<!--                                                <BaseSelect
+                                                <TInput
+                                                    id="state-longitude"
+                                                    label="State longitude"
+                                                    placeholder="State longitude *"
+                                                    ref="state_longitude"
+                                                    label-id="state_longitude"
+                                                    type="text"
+                                                    :maxlength="255"
+                                                    :required-field="true"
+                                                    v-model="params.state_longitude"
+                                                    :is-submit-form="is_submit_form"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="row">                                            
+                                            <div class="col-md-6">
+                                                <BaseSelect
                                                     id="country-name"
-                                                    label="Country"
+                                                    label="Country Name"
                                                     ref="country_name"
                                                     label-id="country_name"
                                                     :required-field="true"
                                                     v-model="params.country_id"
                                                     :options="options"
                                                     :is-submit-form="is_submit_form"
-                                                    @change="change_handle()"
-                                                />-->
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="state-name">State</label>
-                                                    <select v-model="params.state_id" class="form-select" id="state-name"
-                                                            :class="[is_submit_form ? (params.state_id ? 'is-valid' : 'is-invalid') : '']">
-                                                        <option value="" disabled>Select State</option>
-                                                        <option v-for="(name, value) in stateOptions" :key="value" :value="value">
-                                                            {{name}}
-                                                        </option>
-                                                    </select>
-                                                    <div class="valid-feedback">Looks good!</div>
-                                                    <div class="invalid-feedback">Please Select State</div>
-                                                </div>
+                                                />
                                             </div>
                                             <div class="col-md-6">
                                                 <BaseSelect
                                                     id="status"
                                                     label="Status"
                                                     :required-field="false"
-                                                    v-model="params.city_status"
+                                                    v-model="params.state_status"
                                                     :options="activeOptions"
                                                 />
-                                            </div>
+                                            </div>                                            
                                         </div>
-<!--                                        <div class="row">                                            
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label for="city_status">Active Status</label>
-                                                    <div id="city_status" class="col-lg-3 col-md-3 col-sm-4 col-6">
-                                                        <label class="switch s-outline s-outline-success mb-4 me-2">
-                                                            <input
-                                                                v-model="params.city_status"
-                                                                type="checkbox"
-                                                                name="province_status"
-                                                            />
-                                                            <span class="slider round"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>-->
                                     </form>
                                 </div>
                             </div>
@@ -165,7 +166,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal" data-bs-dismiss="modal" @click="reset_form()">Discard</button>
                             <button v-if="loadingSubmitted" disabled type="button" class="btn btn-success">
-                                <SvgIcon icon="feather-loader"></SvgIcon>
+                                <SvgIcon icon="feather-loader"></SvgIcon>                                
                                 Saving...
                             </button>
                             <button v-else type="submit" class="btn btn-success" @click="handle_save()">{{ params.id ? 'Update' : 'Add' }}</button>
@@ -173,7 +174,7 @@
                     </div>
                 </div>
             </div>
-            <!--/ Add City Modal-->
+            <!--/ Add State Modal-->
 
             <!--Delete Modal-->
             <DeleteModal
@@ -188,7 +189,6 @@
         </div>
     </div>
 </template>
-
 <style>
 .VueTables__error {
     color:red;
@@ -199,9 +199,6 @@
     import {computed, onMounted, ref} from 'vue';
     import '@/assets/sass/components/custom-sweetalert.scss';
     import '@/assets/sass/province/province.scss';
-    import Multiselect from '@suadelabs/vue3-multiselect';
-    import '@suadelabs/vue3-multiselect/dist/vue3-multiselect.css';
-    import Loader from '@/views/backend/loader/default-loader';
     import useValidation from "@/composables/useValidation";
     import useShowMessage from "@/composables/useShowMessage";    
     import useExportTable from "@/composables/useExportTable";
@@ -210,10 +207,10 @@
     import DeleteModal from '@/components/form/DeleteModal.vue';
     import { useStore } from 'vuex';
     import { useMeta } from '@/composables/use-meta';
-    import axiosClient from '@/axios'
+    import axiosClient from "@/axios";
     
     /* Set page title */
-    useMeta({ title: 'Province' });
+    useMeta({ title: 'State' });
     
     /* variable declaration */
     const { validation } = useValidation();
@@ -221,97 +218,95 @@
     const { exportTable } = useExportTable();
     const store = useStore();
     const error = ref(null);
+    const activeOptions = ref(store.state.constant.activeStatus);
     const is_submit_form = ref(false);
-    let addCityModal = ref(null);
+    let addStateModal = ref(null);
     let deleteModal = ref(null);
     const pin = ref(null);
     const params = ref({
-        city_name: '',
-        city_status: 'ACTIVE',
+        state_name: '',
+        state_status: 'ACTIVE',
         id:null,
-        state_id: '',
-        country_id: '',
+        country_id:'',
+        state_latitude:'',
+        state_longitude:'',
     });
     const deleteParams = ref({
-        city_id: null,
+        state_id: null,
         pin: '',
     });
-    const table = ref(null);
     const options = ref([]);
-    const stateOptions = ref([]);
-    const activeOptions = ref(store.state.constant.activeStatus);
-    //const province_name = ref(null);
-    const validateData = ref({ city_name:'',country_id:'',state_id:'' });
-    const columns = ref(['id','city_name','state_name','country_name', 'city_status', 'actions']);
+    const table = ref(null);
+    const validateData = ref({ province_name:'',country_id:'',state_latitude:'',state_longitude:''});
+    const columns = ref(['id','state_name', 'country_name', 'state_status', 'actions']);
     const items = ref([]);
-    //const tableData = ref([]);
 
     /* Set Data table option */
-    const table_option = ref({        
+    const table_option = ref({
         perPage: 10,
         perPageValues: [5, 10, 20, 50],
         skin: 'table table-hover',
         columnsClasses: { action: 'actions text-center' },
         pagination: { nav: 'scroll', chunk: 3,edge: true,dropdown: false },
-        orderBy:{column:'cities.id',ascending:true},
+        debounce: 500,
+        filterByColumn:false,
+        filterable:true,
+        orderBy:{column:'states.id',ascending:true},
         texts: {
             count: 'Showing {from} to {to} of {count}',
             filter: '',
             filterPlaceholder: 'Search...',
             limit: 'Results:',
+            loadingError: 'Oops! Something went wrong',
         },
-        sortable: ['id','city_name','city_status'],
+        sortable: ['id','state_name','country_name','state_status'],
         sortIcon: {
             base: 'sort-icon-none',
             up: 'sort-icon-asc',
             down: 'sort-icon-desc',
         },
         requestFunction(data) {
-            return axiosClient.get('/cities', { 
+            return axiosClient.get('/states', {
                 params: data
             }).catch(function (e) {
                 this.dispatch('error',e);
             })
         },
         requestAdapter(data) {
-            //console.log(data);
             return {
                 search_text: data.query,
                 display_item_per_page: data.limit,
                 page: data.page,
-                orderBy: data.orderBy == 'id' || data.orderBy == 'country_code'? 'cities.'+ data.orderBy:data.orderBy,
+                orderBy: data.orderBy == 'id'? 'states.id':data.orderBy,
                 ascending: data.ascending,
-                byColumn: data.byColumn,
+                byColumn: data.byColumn,                
             }
         },
         responseAdapter({data}) {
-            items.value = data.data.cities;
+            items.value = data.data.states;
             return {
-                data: data.data.cities,
+                data: data.data.states,
                 count: data.data.total,
             }
         },
     });
 
-    /* set city data and loader to state */
-    //const loading = computed(() => store.state.country.allCountry.loading);
-    const loadingSubmitted = computed(() =>  store.state.city.buttonLoading.loading);
-    
+    /* set state data and loader to state */
+    //const loading = computed(() => store.state.state.country.loading);
+    const loadingSubmitted = computed(() =>  store.state.state.buttonLoading.loading);
+
     /* Mounted hook */
     onMounted(() => {
-        getCountryData();
-        //initPopup();
-        //params.value.state_id = '';
+        getCountryData();        
     })
     
     /* get state data */
-    function getStateData() {        
-        store.dispatch('state/getAllSateByCountry', params.value.country_id).then(() => {
-            stateOptions.value = store.state.state.allStateByCountry.data.reduce((acc,item) => {
-                return {...acc, [item.id]: item.state_name};
-            },{});
+    /*function getStateData() {        
+        store.dispatch('state/getStates').then(() => {
+            items.value = store.state.state.states.data;
+            initPopup();
         });
-    };
+    }*/
     /* get country data */
     function getCountryData() {
         store.dispatch('country/getAllCountries').then(() => {
@@ -324,14 +319,9 @@
         });
     }
 
-    function change_handle(){
-        getStateData();
-        params.value.state_id = '';
-    }
-
     /* Modal init */
     const initPopup = () => {
-        addCityModal = new window.bootstrap.Modal(document.getElementById('addCityModal'));
+        addStateModal = new window.bootstrap.Modal(document.getElementById('addStateModal'));
     };
 
     /* Delete Modal init */
@@ -339,40 +329,38 @@
         deleteModal = new window.bootstrap.Modal(document.getElementById('deleteModal'));
     };
 
-    /* Update City id on option change */
-    const handle_province_changes = (newValue) => {
-        params.value.state_id = newValue.state_id;
-    }
-
     /* open modal in add and edit mode */
-    const handle_edit = (city) => {        
-        if (city) {
+    const handle_edit = (state) => {        
+        if (state) {
             reset_form();
-            params.value.id = city.id;
-            params.value.city_name = city.city_name;
-            params.value.state_id = city.state_id;
-            params.value.country_id = city.country_id;
-            params.value.city_status = city.city_status;
-            getStateData();
+            //params.value = JSON.parse(JSON.stringify(state));
+            params.value.state_name = state.state_name;
+            params.value.id = state.id;
+            params.value.country_id = state.country_id;
+            params.value.state_latitude = state.state_latitude;
+            params.value.state_longitude = state.state_longitude;
+            params.value.state_status = state.state_status;
         }
-        addCityModal.show();
+        //console.log(params.value);
+        addStateModal.show();
     };
-    /* Save and update city */
+    /* Save and update state */
     function handle_save(){
         is_submit_form.value = true;
-        validateData.value.city_name = params.value.city_name;
+        validateData.value.province_name = params.value.state_name;
         validateData.value.country_id = params.value.country_id;
-        validateData.value.state_id = params.value.state_id;
+        validateData.value.state_latitude = params.value.state_latitude;
+        validateData.value.state_longitude = params.value.state_longitude;
         if (validation(validateData)) {
-            let dispatchUral = 'city/saveCity';
+            let dispatchUral = 'state/saveState';
             if(params.value.id){
-                dispatchUral = 'city/updateCity';
+                dispatchUral = 'state/updateState';
             }
             store.dispatch(dispatchUral,{...params.value}).then(({data}) => {
                 //console.log(data.data);
-                store.commit('city/setButtonLoading', false);
+                store.commit('state/setButtonLoading', false);
                 if(data.data.status === true){
-                    const currentData = store.state.city.city.data;
+                    const currentData = store.state.state.state.data;
                     if(params.value.id){
                         table.value.data[table.value.data.findIndex((d) => d.id === params.value.id)] = currentData;
                     }else {
@@ -380,13 +368,14 @@
                     }
                     showAlert(data.message,'success');// type => success/error
                     reset_form();
-                    addCityModal.hide();
+                    addStateModal.hide();
                 }else{
                     showMessage(data.message,'error');// type => success/error
                 }
+                
             }).catch((err) => {
-                console.log(err);
-                store.commit('city/setButtonLoading', false);
+                store.commit('state/setButtonLoading', false);
+                //error.value = `${err.data.message}`;
                 showMessage('Something went really wrong!','error');// type => success/error
             });
         }else {
@@ -394,20 +383,20 @@
         }
     }
 
-    /* Delete city */
+    /* Delete state */
     function handle_delete(id) {
         reset_delete_form();
-        deleteParams.value.city_id = id;
+        deleteParams.value.state_id = id;
         deleteModal.show();
     }
 
     function delete_submit(){
         if(deleteParams.value.pin){
-            store.dispatch("city/deleteCity",{...deleteParams.value}).then(({data}) => {
+            store.dispatch("state/deleteState",{...deleteParams.value}).then(({data}) => {
                 //console.log(data.data.status);
-                store.commit('city/setButtonLoading', false);
+                store.commit('state/setButtonLoading', false);
                 if(data.data.status === true){
-                    table.value.data.splice(table.value.data.findIndex((d) => d.id === deleteParams.value.city_id),1);
+                    table.value.data.splice(table.value.data.findIndex((d) => d.id === deleteParams.value.state_id),1);
                     showAlert(data.message,'success');// type => success/error
                     reset_delete_form();
                     deleteModal.hide();
@@ -416,40 +405,41 @@
                 }
 
             }).catch((err) => {
-                store.commit('city/setButtonLoading', false);
+                store.commit('state/setButtonLoading', false);
                 showMessage('Something went really wrong!','error');// type => success/error
             });
         }else {
             eval(pin).value?.focus();
         }
 
-    }
+    }    
 
     /* Reset all reactive/ref filed after successful insert */
     const reset_form = () => {
-        params.value = {id:null,city_name:'',state_id: '',city_status: 'ACTIVE',country_id:''};
+        params.value = {id:null,state_name:'',state_status: 'ACTIVE',country_id:'',state_latitude:'',state_longitude:''};
         is_submit_form.value = false;
-        stateOptions.value = [];
     };
 
     /* Reset all reactive/ref filed */
     const reset_delete_form = () => {
-        deleteParams.value.city_id = null;
+        deleteParams.value.state_id = null;
         deleteParams.value.pin = '';
     };
     
     /* Export table function */
     const export_table = (type) => {
         let cols = columns.value.filter((d) => d != 'actions');
-        exportTable(type,items.value,cols,'City');
+        exportTable(type,items.value,cols,'State');
     }
+    
     /* define excel column */
     const excel_columns = () => {
         return {
             'ID': 'id',
-            'Name': 'city_name',
-            'Country Name': 'country_name',
-            'State Name': 'state_name',
+            'Name': 'state_name',
+            'Country Name': 'country_code',
+            'State latitude': 'state_latitude',
+            'State longitude': 'state_longitude',
             Status: 'state_status',
         };
     };

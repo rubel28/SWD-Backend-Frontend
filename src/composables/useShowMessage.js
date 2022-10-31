@@ -11,7 +11,7 @@ const showMessage = (msg = '', type = '') => {
         padding: '10px 20px',
     });
 };
-const showAlert = (msg = '') => {
+const showAlert = (msg = '', type = '') => {
     const toast = window.Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -20,7 +20,7 @@ const showAlert = (msg = '') => {
         padding: '2em',
     });
     toast.fire({
-        icon: 'success',
+        icon: type,
         title: msg,
         padding: '2em',
     });

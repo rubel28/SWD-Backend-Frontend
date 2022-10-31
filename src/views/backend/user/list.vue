@@ -77,11 +77,12 @@
     import { useMeta } from '@/composables/use-meta';
     import useShowMessage from "@/composables/useShowMessage";
     import useExportTable from "@/composables/useExportTable";
+    import { useStore } from 'vuex';
     
     useMeta({ title: 'All User' });
     const { showMessage } = useShowMessage();
     const { exportTable } = useExportTable();
-
+    const store = useStore();
     const columns = ref(['customer_id', 'customer_name', 'passport_no',
         'mobile_no', 'email_address', 'address', 'monthly_limit','Source_of_wealth',
         'source_of_fund','KYC_status','PEP_status','reset_password', 'action']);
@@ -109,6 +110,7 @@
     });
 
     onMounted(() => {
+        //console.log(store.state.login.user.data);
         bind_data();
         feather.replace();
     });

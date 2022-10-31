@@ -12,7 +12,7 @@
             :class="[ requiredField ? (isSubmitForm ? ( modelValue ? 'is-valid' : 'is-invalid') : '') : '']"
         >
             <option value="" disabled>Select {{requiredField ? label + ' *': label}}</option>
-            <option v-for="(name, value) in options" :value="value">{{ name }}</option>
+            <option v-for="(name, value) in options" :key="value" :value="value">{{ name }}</option>
         </select>
         <div v-if="requiredField" class="valid-feedback">Looks good!</div>
         <div v-if="requiredField" class="invalid-feedback"> Please Select {{label}} </div>
