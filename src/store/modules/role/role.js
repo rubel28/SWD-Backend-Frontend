@@ -24,7 +24,11 @@ export default {
         },
     },
     getters: {
-
+        roles(state) {
+            return state.roles.data.reduce((acc, item) => {
+                return {...acc, [item.id]: item.name};
+            },{});
+        },
     },
     mutations: {
         setRoles: (state, roles) => {
@@ -61,7 +65,7 @@ export default {
             return axiosClient.get('/roles')
                 .then((res) => {
                     //console.log(res.data.data.roles)
-                    commit('setRoles', res.data.data);
+                    commit('setRoles', res.data.data.roles);
                     commit('setRolesLoading',false);
                     return res;
                 })
@@ -87,7 +91,7 @@ export default {
             delete role.id;
             commit('setButtonLoading',true)
             let response = axiosClient.post("/roles", role).then((res) => {
-                if(res.data.data.status === true){
+                if(typeof res.data.data.status !== 'undefined' && res.data.data.status === true){
                     commit('setRole', res.data.data.roles);
                 }
                     return res;

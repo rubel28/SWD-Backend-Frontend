@@ -59,5 +59,8 @@ export default {
                     return response;
                 })
         },
+        clearAuthData({commit}) {
+            commit('logout');
+        },
     }
 }

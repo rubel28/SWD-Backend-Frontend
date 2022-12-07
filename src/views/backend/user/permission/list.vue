@@ -225,8 +225,6 @@
         requestFunction(data) {
             return axiosClient.get('/permissions', {
                 params: data
-            }).catch(function (e) {
-                this.dispatch('error',e);
             })
         },
         requestAdapter(data) {

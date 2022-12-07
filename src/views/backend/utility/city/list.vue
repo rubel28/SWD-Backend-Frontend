@@ -340,9 +340,9 @@
     };
 
     /* Update City id on option change */
-    const handle_province_changes = (newValue) => {
+   /* const handle_province_changes = (newValue) => {
         params.value.state_id = newValue.state_id;
-    }
+    }*/
 
     /* open modal in add and edit mode */
     const handle_edit = (city) => {        

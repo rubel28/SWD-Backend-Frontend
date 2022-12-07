@@ -60,11 +60,11 @@
                                 {{$t('all_user')}}
                             </router-link>
                         </li>
-                        <li>
+<!--                        <li>
                             <router-link :to="{name:'login-history'}" @click="toggleMobileMenu">
                                 {{$t('login_history')}}
                             </router-link>
-                        </li>
+                        </li>-->
                     </ul>
                 </li>
                 <!--  End-->

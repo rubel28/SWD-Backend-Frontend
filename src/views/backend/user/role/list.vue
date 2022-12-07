@@ -19,8 +19,8 @@
                 </li>
             </ul>
         </teleport>
-        <Loader v-if="loading"></Loader>
-        <div v-else class="row layout-top-spacing">
+<!--        <Loader v-if="loading"></Loader>-->
+        <div class="row layout-top-spacing">
             <div class="col-12 layout-spacing">
                 <div class="panel br-6">
                     <div class="custom-table panel-body p-0">
@@ -38,9 +38,18 @@
                                 <button variant="primary" class="btn m-1 btn-primary" @click="export_table('pdf')">PDF</button>
                             </div>
                         </div>
-
+                        <div class="vl-parent">
+                            <Loading :active="isLoading"
+                                     :can-cancel="loadingOption.canCancel"
+                                     :color="loadingOption.color"
+                                     :loader="loadingOption.loader"
+                                     :width="loadingOption.width"
+                                     :height="loadingOption.height"
+                                     :backgroundColor="loadingOption.backgroundColor"
+                                     :opacity="loadingOption.opacity"
+                                     :is-full-page="loadingOption.fullPage" />
+                            
                         <v-client-table :data="items" :columns="columns" :options="table_option">
-
                             
                             <template #actions="props">
                                 <a href="javascript:void(0);" title="View" data-bs-toggle="tooltip" data-bs-placement="top">
@@ -66,6 +75,7 @@
                                 </a>
                             </template>-->
                         </v-client-table>
+                         </div>   
                     </div>
                 </div>
             </div>
@@ -167,7 +177,9 @@ import {computed, onMounted, ref} from 'vue';
     import BaseSelect from '@/components/form/core/BaseSelect.vue';
     import DeleteModal from '@/components/form/DeleteModal.vue';
     import { useStore } from 'vuex';
-    import Loader from '@/views/backend/loader/default-loader';
+    import Loading from 'vue-loading-overlay';
+    import 'vue-loading-overlay/dist/css/index.css';
+    //import Loader from '@/views/backend/loader/default-loader';
 
     /* Set page title */
     useMeta({ title: 'Roles' });
@@ -220,7 +232,19 @@ import {computed, onMounted, ref} from 'vue';
     });
 
     /* set loader to state */
-    const loading = computed(() => store.state.role.roles.loading);
+    const loadingOption = ref({
+        fullPage: false,
+        canCancel: false, // default false
+        onCancel: null,
+        color: '#007BFF',
+        loader: 'dots',
+        width: 64,
+        height: 64,
+        backgroundColor: '#ffffff',
+        opacity: 0.5,
+        zIndex: 999,
+    })
+    const isLoading = computed(() => store.state.role.roles.loading);
     const loadingSubmitted = computed(() =>  store.state.role.buttonLoading.loading);    
 
     /* Mounted hook */
@@ -233,11 +257,11 @@ import {computed, onMounted, ref} from 'vue';
     function getRoleData() {
         store.dispatch('role/getRoles').then(() => {
             //console.log(store.state.role.roles.data.roles);
-            items.value = store.state.role.roles.data.roles;
+            items.value = store.state.role.roles.data;
             initPopup();
             initDeletePopup();
         });
-    };
+    }
 
     /* Add Role Modal init */
     const initPopup = () => {

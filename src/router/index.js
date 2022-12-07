@@ -30,6 +30,11 @@ const routes = [
         component: () => import('../views/backend/user/add'),
         meta: { requiresAuth: true }
     },
+    {   path: '/user/profile/add',
+        name: 'profile-add',
+        component: () => import('../views/backend/user/add_profile'),
+        meta: { requiresAuth: true }
+    },
     {   path: '/user/login-history',
         name: 'login-history',
         component: () => import('../views/backend/user/user_manage/login_history'),
@@ -113,7 +118,20 @@ const routes = [
         name: 'logout',
         component: () => import('../views/backend/auth/logout')
     },
-
+    //verify email page
+    {
+        path:'/mail-verify/:token',
+        name: 'mail-verify',
+        component: () => import('../views/backend/user/mail_confirm/mail_confirmation'),
+        meta: { layout: 'auth' }
+    },
+    //privacy page
+    {
+        path:'/terms-privacy',
+        name: 'terms-privacy',
+        component: () => import('../views/backend/privacy/privacy_policy'),
+        meta: { layout: 'auth' }
+    },
     //Error page
     {
         path:'/error404',

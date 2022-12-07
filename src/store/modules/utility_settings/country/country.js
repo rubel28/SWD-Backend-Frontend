@@ -20,7 +20,21 @@ export default {
         },
     },
     getters: {
-
+        currencyList(state){
+            //console.log(state.allCountry.data);
+            return state.allCountry.data.reduce((acc, item) => {
+                return {...acc, [item.country_currency]: item.country_currency};
+            },{});
+        },
+        currencyListForElevenAmCurrencyAdd(state){
+            return state.allCountry.data.filter((d) => d.country_is_display === 'NO')
+                .map((item) => {
+                    return {'id':item.id,'name':item.country_name,'currency':item.country_currency}
+                });
+        },
+        countryList(state){
+            return state.allCountry.data;
+        },
     },
     mutations: {
         setCountries: (state, countries) => {
@@ -105,7 +119,7 @@ export default {
             });
         },
         getAllCountries({commit}){
-            return axiosClient.get('/country_list')
+            return axiosClient.get('/country_list?display_item_per_page=500')
                 .then((res) => {
                     //console.log(res.data.data)
                     if(res.data.success === true){

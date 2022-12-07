@@ -11,6 +11,24 @@ const showMessage = (msg = '', type = '') => {
         padding: '10px 20px',
     });
 };
+const showArrayMessage = (msg = [], type = '') => {
+    let eMessage = '';
+    //console.log(eMessage);
+    Object.values(msg).forEach((value) => {
+        eMessage += value + "\n";
+    });
+    const toast = window.Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 3000,
+    });
+    toast.fire({
+        icon: type,
+        title: eMessage,
+        padding: '10px 20px',
+    });
+};
 const showAlert = (msg = '', type = '') => {
     const toast = window.Swal.mixin({
         toast: true,
@@ -27,7 +45,7 @@ const showAlert = (msg = '', type = '') => {
 };
 
 const useShowMessage = () => {
-    return { showMessage, showAlert }
+    return { showMessage, showAlert,showArrayMessage }
 }
 
 export default useShowMessage

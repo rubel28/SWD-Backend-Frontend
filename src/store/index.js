@@ -12,6 +12,8 @@ import branch from './modules/utility_settings/bank/branch';
 import role from './modules/role/role';
 import permission from './modules/permission/permission';
 import constant from './modules/utility_settings/constant/constant';
+import registration from './modules/registration/registration';
+import xeRate from './modules/dashboard/xe-rate';
 
 export default new createStore({
     state: {        
@@ -26,9 +28,9 @@ export default new createStore({
         menu_style: 'vertical',
         layout_style: 'full',
         countryList: [
-            { code: 'zh', name: 'Chinese' },
-            { code: 'da', name: 'Danish' },
             { code: 'en', name: 'English' },
+            /*{ code: 'zh', name: 'Chinese' },
+            { code: 'da', name: 'Danish' },
             { code: 'fr', name: 'French' },
             { code: 'de', name: 'German' },
             { code: 'el', name: 'Greek' },
@@ -40,7 +42,7 @@ export default new createStore({
             { code: 'ru', name: 'Russian' },
             { code: 'es', name: 'Spanish' },
             { code: 'sv', name: 'Swedish' },
-            { code: 'tr', name: 'Turkish' },
+            { code: 'tr', name: 'Turkish' },*/
         ],
     },
     mutations: {
@@ -121,5 +123,7 @@ export default new createStore({
         role,
         permission,
         constant,
+        registration,
+        xeRate,
     },
 });

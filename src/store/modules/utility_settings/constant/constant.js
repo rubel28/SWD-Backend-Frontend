@@ -43,9 +43,12 @@ export default {
             'AOD':'Bank Name (Account Deposit)',
             'AGT':'Cash Pickup Payout Payee'
         },
+        hrpDecimalPlaces: 5,
     },
     getters: {
-
+        hrpDecimalPlaces(state){
+            return state.hrpDecimalPlaces;
+        }
     },
     mutations: {
         
